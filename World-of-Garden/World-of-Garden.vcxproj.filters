@@ -9,32 +9,18 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Data">
-      <UniqueIdentifier>{82ecd09a-a9e5-455b-b6a0-95e37dc7b28a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Azard\Desktop\nehe\Lesson10.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\NeHe\lesson06\Lesson06\Lesson6.cpp">
+    <ClCompile Include="move.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Data\Mud.bmp">
-      <Filter>Data</Filter>
-    </Image>
-    <Image Include="..\..\NeHe\lesson06\Lesson06\Data\NeHe.bmp">
-      <Filter>Data</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Data\World.txt">
-      <Filter>Data</Filter>
-    </Text>
+    <ClInclude Include="move.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

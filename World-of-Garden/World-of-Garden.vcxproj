@@ -66,16 +66,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\NeHe\lesson06\Lesson06\Lesson6.cpp" />
-    <ClCompile Include="C:\Users\Azard\Desktop\nehe\Lesson10.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="move.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\NeHe\lesson06\Lesson06\Data\NeHe.bmp" />
-    <Image Include="Data\Mud.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Data\World.txt" />
+    <ClInclude Include="move.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
