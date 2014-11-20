@@ -67,10 +67,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="move.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="mouse.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="move.h" />
+    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="mouse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

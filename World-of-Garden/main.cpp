@@ -8,34 +8,25 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-#include "move.h"
+#include "keyboard.h"
+#include "mouse.h"
 
+GLint snowman_display_list;
 
-
-void changeSize(int w, int h)
+void reshape_init(int w, int h)
 {
-	// Prevent a divide by zero, when window is too short
-	// (you cant make a window of zero width).
 	if (h == 0)
 		h = 1;
-
 	ratio = 1.0f * w / h;
-	// Reset the coordinate system before modifying
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
-	// Set the viewport to be the entire window
 	glViewport(0, 0, w, h);
-
-	// Set the clipping volume
 	gluPerspective(45, ratio, 1, 1000);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(x, y, z,
-		x + lx, y + ly, z + lz,
-		0.0f, 1.0f, 0.0f);
-
-
+	flush_view(angle_plane, angle_updown);
 }
 
 
@@ -122,9 +113,6 @@ void renderScene(void) {
 
 
 
-
-
-
 int main(int argc, char** argv) {
 	
 	glutInit(&argc, argv);
@@ -143,10 +131,10 @@ int main(int argc, char** argv) {
 	}
 
 	initKeyBord();
+	initMouse();
 	initScene();
-	
-	
-	glutReshapeFunc(changeSize);
+	glutReshapeFunc(reshape_init);
+
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
 	

@@ -1,57 +1,59 @@
-#include "move.h"
+#include "keyboard.h"
 
 float angle_plane = 0.0;
+float angle_updown = 0.0;
 float speed_turn_plane = 0.03f;
-float speed_move = 0.1f;
+float speed_move = 0.3f;
 float ratio;
 float x = 0.0f, y = 1.75f, z = 5.0f;
 float lx = 0.0f, ly = 0.0f, lz = -1.0f;
-GLint snowman_display_list;
 
 
-void orient_me(float ang) {
-	lx = sin(ang);
-	lz = -cos(ang);
+void flush_view(float ang_p, float ang_u) {
+	lx = sin(ang_p) * cos(ang_u);
+	ly = sin(ang_u);
+	lz = -cos(ang_p) * cos(ang_u);
 	glLoadIdentity();
 	gluLookAt(x, y, z,
-		x + lx, y + ly, z + lz,
+		x + lx, y - ly, z + lz,
 		0.0f, 1.0f, 0.0f);
 }
 
-void move_ab(int i) {
+void move_ab(float i) {
 	x = x + i*(lx)*speed_move;
 	z = z + i*(lz)*speed_move;
-	glLoadIdentity();
-	gluLookAt(x, y, z,
-		x + lx, y + ly, z + lz,
-		0.0f, 1.0f, 0.0f);
+	flush_view(angle_plane, angle_updown);
 }
 
-void move_lr(int i) {
+void move_ud(float i) {
+	y = y + i*speed_move;
+	flush_view(angle_plane, angle_updown);
+}
+
+void move_lr(float i) {
 	x = x - i*(lz)*speed_move;
 	z = z + i*(lx)*speed_move;
-	glLoadIdentity();
-	gluLookAt(x, y, z,
-		x + lx, y + ly, z + lz,
-		0.0f, 1.0f, 0.0f);
+	flush_view(angle_plane, angle_updown);
 }
 
 void turn_left() {
 	angle_plane -= speed_turn_plane;
-	orient_me(angle_plane);
+	flush_view(angle_plane, angle_updown);
 }
 
 void turn_right() {
 	angle_plane += speed_turn_plane;
-	orient_me(angle_plane);
+	flush_view(angle_plane, angle_updown);
 }
 
 void walk_ahead() {
-	move_ab(1);
+	move_ab(abs(cos(angle_updown)));
+	move_ud(-sin(angle_updown));
 }
 
 void walk_back() {
-	move_ab(-1);
+	move_ab(-abs(cos(angle_updown)));
+	move_ud(sin(angle_updown));
 }
 
 void walk_left() {
