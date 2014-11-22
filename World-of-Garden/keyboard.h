@@ -10,6 +10,9 @@ extern float ratio;
 extern float x, y, z;
 extern float lx, ly, lz;
 
+extern bool click_left;
+extern bool click_right;
+
 
 void turn_left();
 void turn_right();

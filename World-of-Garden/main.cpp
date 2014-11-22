@@ -10,6 +10,7 @@
 
 #include "keyboard.h"
 #include "mouse.h"
+#include "map.h"
 
 GLint snowman_display_list;
 
@@ -22,7 +23,7 @@ void reshape_init(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, w, h);
-	gluPerspective(45, ratio, 1, 1000);
+	gluPerspective(60, ratio, 1, 1000);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -80,6 +81,10 @@ GLuint createDL() {
 }
 
 void initScene() {
+	// 第一视角初始位置
+	x = 50;
+	y = 0;
+	z = 50;
 
 	glEnable(GL_DEPTH_TEST);
 	snowman_display_list = createDL();
@@ -92,22 +97,25 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Draw ground
-	glColor3f(0.9f, 0.9f, 0.9f);
+	/*glColor3f(0.9f, 0.9f, 0.9f);
 	glBegin(GL_QUADS);
 	glVertex3f(-100.0f, 0.0f, -100.0f);
 	glVertex3f(-100.0f, 0.0f, 100.0f);
 	glVertex3f(100.0f, 0.0f, 100.0f);
 	glVertex3f(100.0f, 0.0f, -100.0f);
-	glEnd();
+	glEnd();*/
 
 	// Draw 36 SnowMen
 	for (int i = -3; i < 3; i++)
 	for (int j = -3; j < 3; j++) {
 		glPushMatrix();
 		glTranslatef(i*10.0, 0, j * 10.0);
-		glCallList(snowman_display_list);;
+		glCallList(snowman_display_list);
 		glPopMatrix();
 	}
+
+	RenderHeightMap();
+
 	glutSwapBuffers();
 }
 
@@ -117,8 +125,8 @@ int main(int argc, char** argv) {
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(400, 200);
-	glutInitWindowSize(800, 600);
+	glutInitWindowPosition(350, 150);
+	glutInitWindowSize(1024, 768);
 	glutCreateWindow("World Of Garden");
 
 	GLenum err = glewInit();
@@ -132,11 +140,16 @@ int main(int argc, char** argv) {
 
 	initKeyBord();
 	initMouse();
+	initTerran();
 	initScene();
 	glutReshapeFunc(reshape_init);
 
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
+
+
+
+
 	
 
 	glutMainLoop();

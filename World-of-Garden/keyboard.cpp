@@ -37,11 +37,19 @@ void move_lr(float i) {
 }
 
 void turn_left() {
+	if (click_right) {
+		walk_left();
+		return;
+	}
 	angle_plane -= speed_turn_plane;
 	flush_view(angle_plane, angle_updown);
 }
 
 void turn_right() {
+	if (click_right) {
+		walk_right();
+		return;
+	}
 	angle_plane += speed_turn_plane;
 	flush_view(angle_plane, angle_updown);
 }
