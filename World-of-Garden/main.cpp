@@ -23,7 +23,7 @@ void reshape_init(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, w, h);
-	gluPerspective(60, ratio, 1, 1000);
+	gluPerspective(45, ratio, 1, 1000);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -33,13 +33,11 @@ void reshape_init(int w, int h)
 
 void drawSnowMan() {
 
-
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	// Draw Body	
 	glTranslatef(0.0f, 0.75f, 0.0f);
 	glutSolidSphere(0.75f, 20, 20);
-
 
 	// Draw Head
 	glTranslatef(0.0f, 1.0f, 0.0f);
@@ -60,61 +58,46 @@ void drawSnowMan() {
 	glutSolidCone(0.08f, 0.5f, 10, 2);
 }
 
-
-
-GLuint createDL() {
+GLuint createSnowman() {
 	GLuint snowManDL;
-
-	// Create the id for the list
 	snowManDL = glGenLists(1);
-
-	// start list
 	glNewList(snowManDL, GL_COMPILE);
-
-	// call the function that contains the rendering commands
 	drawSnowMan();
-
-	// endList
 	glEndList();
-
 	return(snowManDL);
 }
 
 void initScene() {
 	// 第一视角初始位置
-	x = 50;
-	y = 0;
-	z = 50;
+	x = 64;
+	y = 10;
+	z = 64;
 
+	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
-	snowman_display_list = createDL();
+	glDepthFunc(GL_LEQUAL);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+	snowman_display_list = createSnowman();
 
 }
 
-
-
-void renderScene(void) {
+void render_scene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Draw ground
-	/*glColor3f(0.9f, 0.9f, 0.9f);
-	glBegin(GL_QUADS);
-	glVertex3f(-100.0f, 0.0f, -100.0f);
-	glVertex3f(-100.0f, 0.0f, 100.0f);
-	glVertex3f(100.0f, 0.0f, 100.0f);
-	glVertex3f(100.0f, 0.0f, -100.0f);
-	glEnd();*/
-
-	// Draw 36 SnowMen
-	for (int i = -3; i < 3; i++)
-	for (int j = -3; j < 3; j++) {
+	for (int i = 0; i < 2; i++)
+	for (int j = 0; j < 2; j++) {
 		glPushMatrix();
+		glTranslatef(50.0, 0, 50.0);
 		glTranslatef(i*10.0, 0, j * 10.0);
 		glCallList(snowman_display_list);
+		
 		glPopMatrix();
 	}
 
-	RenderHeightMap();
+	render_height_map();
+	render_wall();
+	render_sky();
 
 	glutSwapBuffers();
 }
@@ -140,12 +123,14 @@ int main(int argc, char** argv) {
 
 	initKeyBord();
 	initMouse();
-	initTerran();
 	initScene();
-	glutReshapeFunc(reshape_init);
 
-	glutDisplayFunc(renderScene);
-	glutIdleFunc(renderScene);
+	initMapTexture();
+	initTerran();
+
+	glutReshapeFunc(reshape_init);
+	glutDisplayFunc(render_scene);
+	glutIdleFunc(render_scene);
 
 
 

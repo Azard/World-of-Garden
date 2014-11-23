@@ -70,11 +70,13 @@
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="plants.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mouse.h" />
+    <ClInclude Include="plants.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

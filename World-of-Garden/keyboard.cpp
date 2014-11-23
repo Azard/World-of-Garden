@@ -13,6 +13,8 @@ void flush_view(float ang_p, float ang_u) {
 	lx = sin(ang_p) * cos(ang_u);
 	ly = sin(ang_u);
 	lz = -cos(ang_p) * cos(ang_u);
+	if (y < 5)
+		y = 5;
 	glLoadIdentity();
 	gluLookAt(x, y, z,
 		x + lx, y - ly, z + lz,
@@ -71,6 +73,7 @@ void walk_left() {
 void walk_right() {
 	move_lr(1);
 }
+
 
 
 void initNormalKeys(unsigned char key, int x, int y) {
