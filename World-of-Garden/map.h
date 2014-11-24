@@ -7,7 +7,7 @@
 #include <GL/GLAUX.H>
 
 #define MAP_SIZE		128
-#define STEP_SIZE		2
+#define STEP_SIZE		4
 #define HEIGHT_RATIO	10.0f
 #define TEXTURE_NUM		2
 

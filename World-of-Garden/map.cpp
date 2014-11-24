@@ -68,7 +68,6 @@ void render_wall() {
 	// »­Ç½
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	//glColor3f(0.2f, 0.2f, 0.2f);
 	glBegin(GL_QUADS);
 	{
 		for (int i = 0; i <= 120; i += 8) {

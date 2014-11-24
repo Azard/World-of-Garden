@@ -7,10 +7,12 @@
 #include <math.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
+//#include <GL/glui.h>
 
 #include "keyboard.h"
 #include "mouse.h"
 #include "map.h"
+#include "plants.h"
 
 GLint snowman_display_list;
 
@@ -88,7 +90,7 @@ void render_scene(void) {
 	for (int i = 0; i < 2; i++)
 	for (int j = 0; j < 2; j++) {
 		glPushMatrix();
-		glTranslatef(50.0, 0, 50.0);
+		glTranslatef(70.0, 0, 70.0);
 		glTranslatef(i*10.0, 0, j * 10.0);
 		glCallList(snowman_display_list);
 		
@@ -99,6 +101,15 @@ void render_scene(void) {
 	render_wall();
 	render_sky();
 
+	render_tree();
+
+
+
+
+
+
+
+
 	glutSwapBuffers();
 }
 
@@ -108,8 +119,8 @@ int main(int argc, char** argv) {
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(350, 150);
-	glutInitWindowSize(1024, 768);
+	glutInitWindowPosition(300, 150);
+	glutInitWindowSize(1024, 690);
 	glutCreateWindow("World Of Garden");
 
 	GLenum err = glewInit();
