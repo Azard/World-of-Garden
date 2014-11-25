@@ -7,14 +7,21 @@
 #include <math.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
-//#include <GL/glui.h>
+#include <GL/glui.h>
 
 #include "keyboard.h"
 #include "mouse.h"
 #include "map.h"
 #include "plants.h"
 
+#define WINDOW_POS_X	300
+#define WINDOW_POS_Y	150
+#define WINDOW_LENGTH	1024
+#define WINDOW_WIDTH	768
+
+
 GLint snowman_display_list;
+int main_window;
 
 void reshape_init(int w, int h)
 {
@@ -103,6 +110,10 @@ void render_scene(void) {
 	render_tree();
 
 
+	if (glutGetWindow() != main_window)
+		glutSetWindow(main_window);
+	glutPostRedisplay();
+
 	glutSwapBuffers();
 }
 
@@ -112,9 +123,9 @@ int main(int argc, char** argv) {
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(1024, 690);
-	glutCreateWindow("World Of Garden");
+	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
+	glutInitWindowSize(WINDOW_LENGTH, WINDOW_WIDTH);
+	main_window = glutCreateWindow("World Of Garden");
 
 	GLenum err = glewInit();
 	if (err != GLEW_OK) {
@@ -134,11 +145,25 @@ int main(int argc, char** argv) {
 
 	glutReshapeFunc(reshape_init);
 	glutDisplayFunc(render_scene);
-	glutIdleFunc(render_scene);
+	//glutIdleFunc(render_scene);
 
 
+	// GLUI模块
+	GLUI *glui = GLUI_Master.create_glui("GLUI", 0, WINDOW_LENGTH + WINDOW_POS_X + 15, WINDOW_POS_Y);
+	glui->add_statictext("Hello");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->set_main_gfx_window(main_window);
 
 
+	glui->set_main_gfx_window(main_window);
+	GLUI_Master.set_glutIdleFunc(render_scene);
 	
 
 	glutMainLoop();
