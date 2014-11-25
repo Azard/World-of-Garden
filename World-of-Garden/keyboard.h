@@ -1,8 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <sstream>
+#include <string>
 #include <math.h>
 #include <GL/glut.h>
+#include "ui.h"
 
+extern UI_set* UI;
 
 extern float angle_plane;
 extern float angle_updown;

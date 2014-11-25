@@ -13,15 +13,16 @@
 #include "mouse.h"
 #include "map.h"
 #include "plants.h"
+#include "ui.h"
 
 #define WINDOW_POS_X	300
 #define WINDOW_POS_Y	150
 #define WINDOW_LENGTH	1024
 #define WINDOW_WIDTH	768
 
-
 GLint snowman_display_list;
 int main_window;
+UI_set* UI = new UI_set;
 
 void reshape_init(int w, int h)
 {
@@ -118,6 +119,11 @@ void render_scene(void) {
 }
 
 
+void control_cb(int control) {
+	printf("callback: %d\n", control);
+}
+
+
 
 int main(int argc, char** argv) {
 	
@@ -149,20 +155,33 @@ int main(int argc, char** argv) {
 
 
 	// GLUI模块
-	GLUI *glui = GLUI_Master.create_glui("GLUI", 0, WINDOW_LENGTH + WINDOW_POS_X + 15, WINDOW_POS_Y);
-	glui->add_statictext("Hello");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->set_main_gfx_window(main_window);
+	UI->glui = GLUI_Master.create_glui("GLUI", 0, WINDOW_LENGTH + WINDOW_POS_X + 15, WINDOW_POS_Y);
+	UI->panel_terrain = UI->glui->add_panel("Terrain");
+	UI->panel_plant = UI->glui->add_panel("Plant");
+	UI->terrain_x = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain x: -");
+	UI->terrain_z = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain z: -");
+	UI->terrain_height_text = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain height:");
+	
 
 
-	glui->set_main_gfx_window(main_window);
+
+	/*
+	GLUI_Checkbox* t1 = UI->glui->add_checkbox("Click me", (int*)0, -1, control_cb);
+	GLUI_Panel* p1 = glui->add_panel("123");
+	glui->add_checkbox_to_panel(p1, "asd");d
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	glui->add_checkbox("Click me");
+	t1->set_name("asd");*/
+
+
+
+
+
+	UI->glui->set_main_gfx_window(main_window);
 	GLUI_Master.set_glutIdleFunc(render_scene);
 	
 

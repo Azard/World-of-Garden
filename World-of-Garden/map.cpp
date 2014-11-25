@@ -38,6 +38,31 @@ void render_height_map()
 	{
 		// 判断是否为选定区域
 		if (select_x <= X + STEP_SIZE && select_x > X && select_z <= Y + STEP_SIZE && select_z > Y) {
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glBegin(GL_QUADS);
+
+			x = X;
+			y = get_terran_height(X, Y);
+			z = Y;
+			glVertex3f(x, y / HEIGHT_RATIO, z);
+			x = X;
+			y = get_terran_height(X, Y + STEP_SIZE);
+			z = Y + STEP_SIZE;
+			glVertex3f(x, y / HEIGHT_RATIO, z);
+			x = X + STEP_SIZE;
+			y = get_terran_height(X + STEP_SIZE, Y + STEP_SIZE);
+			z = Y + STEP_SIZE;
+			glVertex3f(x, y / HEIGHT_RATIO, z);
+			x = X + STEP_SIZE;
+			y = get_terran_height(X + STEP_SIZE, Y);
+			z = Y;
+			glVertex3f(x, y / HEIGHT_RATIO, z);
+
+			glEnd();
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, texture[0]);
+			glBegin(GL_QUADS);
 			continue;
 		}
 		x = X;

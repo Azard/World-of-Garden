@@ -90,6 +90,15 @@ void select_this_land()
 		select_z--;
 	else
 		select_z++;
+
+	std::ostringstream s1, s2;
+	s1 << select_x;
+	std::string s3 = s1.str();
+	UI->terrain_x->set_text(("terrain x: " + s3).c_str());
+	s2 << select_z;
+	s3 = s2.str();
+	UI->terrain_z->set_text(("terrain z: " + s3).c_str());
+
 	fprintf(stdout, "select, x:%d, z:%d\n", select_x, select_z);
 }
 
