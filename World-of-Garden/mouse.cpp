@@ -48,8 +48,14 @@ void initMouseClickMove(int x, int y) {
 	}
 }
 
+void initMouseMove(int x, int y) {
+	mouse_x_pos = x;
+	mouse_y_pos = y;
+}
+
 
 void initMouse() {
 	glutMouseFunc(initMouseClick);
 	glutMotionFunc(initMouseClickMove);
+	//glutPassiveMotionFunc(initMouseMove);
 }

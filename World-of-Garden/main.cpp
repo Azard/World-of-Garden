@@ -96,18 +96,11 @@ void render_scene(void) {
 		
 		glPopMatrix();
 	}
-
 	render_height_map();
 	render_wall();
 	render_sky();
 
 	render_tree();
-
-
-
-
-
-
 
 
 	glutSwapBuffers();
@@ -119,7 +112,7 @@ int main(int argc, char** argv) {
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition(300, 150);
+	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(1024, 690);
 	glutCreateWindow("World Of Garden");
 

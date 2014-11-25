@@ -20,4 +20,5 @@ extern int mouse_y_pos;
 
 void initMouseClick(int button, int state, int x, int y);
 void initMouseClickMove(int x, int y);
+void initMouseMove(int x, int y);
 void initMouse();

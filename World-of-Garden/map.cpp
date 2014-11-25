@@ -36,12 +36,15 @@ void render_height_map()
 	for (X = 0; X < (MAP_SIZE); X += STEP_SIZE)
 	for (Y = 0; Y < (MAP_SIZE); Y += STEP_SIZE)
 	{
+		// 判断是否为选定区域
+		if (select_x <= X + STEP_SIZE && select_x > X && select_z <= Y + STEP_SIZE && select_z > Y) {
+			continue;
+		}
 		x = X;
 		y = get_terran_height(X, Y);
 		z = Y;
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f(x, y / HEIGHT_RATIO, z);
-
 		x = X;
 		y = get_terran_height(X, Y + STEP_SIZE);
 		z = Y + STEP_SIZE;
@@ -52,7 +55,6 @@ void render_height_map()
 		z = Y + STEP_SIZE;
 		glTexCoord2f(1.0f, 1.0f);
 		glVertex3f(x, y / HEIGHT_RATIO, z);
-
 		x = X + STEP_SIZE;
 		y = get_terran_height(X + STEP_SIZE, Y);
 		z = Y;

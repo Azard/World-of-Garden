@@ -18,8 +18,6 @@ void draw_tree_leaf(int level, float height, tree_leaf leaf_data) {
 			glVertex3f(0, size + t * i, 0);
 			glVertex3f(size, size + t * i, 0);
 		}
-		
-
 	}
 	glEnd();
 }

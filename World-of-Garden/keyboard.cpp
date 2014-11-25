@@ -7,6 +7,8 @@ float speed_move = 0.3f;
 float ratio;
 float x = 0.0f, y = 1.75f, z = 5.0f;
 float lx = 0.0f, ly = 0.0f, lz = -1.0f;
+int select_x = -1;
+int select_z = -1;
 
 
 void flush_view(float ang_p, float ang_u) {
@@ -19,6 +21,7 @@ void flush_view(float ang_p, float ang_u) {
 	gluLookAt(x, y, z,
 		x + lx, y - ly, z + lz,
 		0.0f, 1.0f, 0.0f);
+	fprintf(stdout, "pos x:%f, z:%f\n", x, z);
 }
 
 void move_ab(float i) {
@@ -74,6 +77,21 @@ void walk_right() {
 	move_lr(1);
 }
 
+void select_this_land()
+{
+	fprintf(stdout, "select pos, x:%f, z:%f, lx:%f, lz:%f\n", x, z, lx, lz);
+	select_x = x + lx;
+	select_z = z + lz;
+	if (lx < 0)
+		select_x--;
+	else
+		select_x++;
+	if (lz < 0)
+		select_z--;
+	else
+		select_z++;
+	fprintf(stdout, "select, x:%d, z:%d\n", select_x, select_z);
+}
 
 
 void initNormalKeys(unsigned char key, int x, int y) {
@@ -97,6 +115,9 @@ void initNormalKeys(unsigned char key, int x, int y) {
 		break;
 	case 'e':
 		walk_right();
+		break;
+	case 'c':
+		select_this_land();
 		break;
 	}
 }

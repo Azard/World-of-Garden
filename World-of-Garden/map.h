@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/GLAUX.H>
+#include "keyboard.h"
 
 #define MAP_SIZE		128
 #define STEP_SIZE		4
