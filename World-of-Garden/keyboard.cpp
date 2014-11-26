@@ -91,13 +91,18 @@ void select_this_land()
 	else
 		select_z++;
 
-	std::ostringstream s1, s2;
+	std::ostringstream s1, s2, s4;
 	s1 << select_x;
 	std::string s3 = s1.str();
 	UI->terrain_x->set_text(("terrain x: " + s3).c_str());
 	s2 << select_z;
 	s3 = s2.str();
 	UI->terrain_z->set_text(("terrain z: " + s3).c_str());
+	int s_height = get_terran_height(select_x, select_z);
+	s4 << s_height;
+	s3 = s4.str();
+	UI->terrain_height_text->set_text(("terrain height: " + s3).c_str());
+
 
 	fprintf(stdout, "select, x:%d, z:%d\n", select_x, select_z);
 }

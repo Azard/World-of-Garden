@@ -16,12 +16,46 @@ void load_terran() {
 		fprintf(stderr, "Terrain file open fail\n");
 	}
 	terrain_stream.read((char*)terrain, MAP_SIZE * MAP_SIZE);
+	terrain_stream.close();
 }
 
 int get_terran_height(int x, int y) {
 	x = x % MAP_SIZE;
 	y = y % MAP_SIZE;
 	return ((unsigned char*)terrain)[x + (y * MAP_SIZE)];
+}
+
+void set_terrain_height(int height_plus) {
+	int start_x = select_x / STEP_SIZE * STEP_SIZE;
+	int start_z = select_z / STEP_SIZE * STEP_SIZE;
+	int save_height[(STEP_SIZE +1)* (STEP_SIZE+1)];
+	for (int i = 0; i <= STEP_SIZE; i++) {
+		for (int j = 0; j <= STEP_SIZE; j++) {
+			save_height[i*(STEP_SIZE+1) + j] = get_terran_height(start_x + i, start_z + j);
+			save_height[i*(STEP_SIZE+1) + j] += height_plus;
+			if (save_height[i*(STEP_SIZE+1) + j] < 0)
+				save_height[i*(STEP_SIZE+1) + j] = 0;
+			((unsigned char*)terrain)[start_x+i + (start_z+j)*MAP_SIZE] = save_height[i*(STEP_SIZE+1)+j];
+		}
+	}
+	std::ostringstream s1;
+	int s_height = get_terran_height(select_x, select_z);
+	s1 << s_height;
+	std::string s2 = s1.str();
+	UI->terrain_height_text->set_text(("terrain height: " + s2).c_str());	
+}
+
+void terrain_save() {
+	terrain_stream.open("Data/Terrain.raw", std::ios::out | std::ios::binary | std::ios::in);
+	if (terrain_stream.is_open()) {
+		fprintf(stdout, "Terrain file open success\n");
+	}
+	else {
+		fprintf(stderr, "Terrain file open fail\n");
+	}
+	terrain_stream.write((char*)terrain, MAP_SIZE * MAP_SIZE);
+	fprintf(stdout, "Terrain file save success\n");
+	terrain_stream.close();
 }
 
 void render_height_map()

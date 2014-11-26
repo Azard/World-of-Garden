@@ -5,6 +5,7 @@
 #include <math.h>
 #include <GL/glut.h>
 #include "ui.h"
+#include "map.h"
 
 extern UI_set* UI;
 

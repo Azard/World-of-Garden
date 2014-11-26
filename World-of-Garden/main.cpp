@@ -121,6 +121,17 @@ void render_scene(void) {
 
 void control_cb(int control) {
 	printf("callback: %d\n", control);
+	switch (control) {
+	case TERRAIN_HIGHER_BUTTON_ID:
+		set_terrain_height(1);
+		break;
+	case TERRAIN_LOWER_BUTTON_ID:
+		set_terrain_height(-1);
+		break;
+	case TERRAIN_SAVE_BUTTON_ID:
+		terrain_save();
+		break;
+	}
 }
 
 
@@ -160,8 +171,10 @@ int main(int argc, char** argv) {
 	UI->panel_plant = UI->glui->add_panel("Plant");
 	UI->terrain_x = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain x: -");
 	UI->terrain_z = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain z: -");
-	UI->terrain_height_text = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain height:");
-	
+	UI->terrain_height_text = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain height: -");
+	UI->terrain_height_plus = UI->glui->add_button_to_panel(UI->panel_terrain, "Higher", TERRAIN_HIGHER_BUTTON_ID, control_cb);
+	UI->terrain_height_dec = UI->glui->add_button_to_panel(UI->panel_terrain, "Lower", TERRAIN_LOWER_BUTTON_ID, control_cb);
+	UI->terrain_save = UI->glui->add_button_to_panel(UI->panel_terrain, "Save", TERRAIN_SAVE_BUTTON_ID, control_cb);
 
 
 
