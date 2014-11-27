@@ -23,6 +23,13 @@ struct UI_set {
 	GLUI_Button* terrain_height_dec;
 	GLUI_Button* terrain_save;
 
+	GLUI_StaticText* plant_type;
+	GLUI_StaticText* plant_x;
+	GLUI_StaticText* plant_z;
+	GLUI_Panel* plant_level_panel;
+	GLUI_StaticText* plant_level;
+	GLUI_Button* plant_level_plus;
+	GLUI_Button* plant_level_dec;
 
 };
 

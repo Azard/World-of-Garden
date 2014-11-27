@@ -1,13 +1,15 @@
 #include "plants.h"
 
+std::fstream plant_stream;
+plant* plant_data = new plant[PLANT_NUM * PLANT_NUM];
 
 
 
-void draw_tree_leaf(int level, float height, tree_leaf leaf_data) {
+void draw_tree_leaf(int level, float height, plant p) {
 	if (level <= 1)
 		return;
-	int num = leaf_data.num;
-	float size = leaf_data.size;
+	int num = p.tree_leaf_num;
+	float size = p.tree_leaf_size;
 
 	glBegin(GL_TRIANGLES);
 	{
@@ -22,10 +24,7 @@ void draw_tree_leaf(int level, float height, tree_leaf leaf_data) {
 	glEnd();
 }
 
-
-
-
-void draw_tree_recursion(int level, float height, float radius, tree_leaf leaf_data) {
+void draw_tree_recursion(int level, float height, float radius, plant p) {
 	if (level < 1) {
 		return;
 	}
@@ -41,16 +40,16 @@ void draw_tree_recursion(int level, float height, float radius, tree_leaf leaf_d
 	// 上面的树枝
 	glPushMatrix();
 		glTranslatef(0, height, 0);
-		draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
-		draw_tree_leaf(level, child_height, leaf_data);
+		draw_tree_recursion(level - 1, child_height, child_radius, p);
+		draw_tree_leaf(level, child_height, p);
 	glPopMatrix();
 
 	// 侧面的树枝-1
 	glPushMatrix();
 		glTranslatef(0, height / 3 * 2, 0);
 		glRotatef(60, 1, 0, 0);
-		draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
-		draw_tree_leaf(level, child_height, leaf_data);
+		draw_tree_recursion(level - 1, child_height, child_radius, p);
+		draw_tree_leaf(level, child_height, p);
 	glPopMatrix();
 
 	// 侧面的树枝-2
@@ -60,8 +59,8 @@ void draw_tree_recursion(int level, float height, float radius, tree_leaf leaf_d
 		glRotatef(120, 0, 1, 0);
 		glRotatef(120, 0, 0, 1);
 		glRotatef(90, 1, 0, 0);
-		draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
-		draw_tree_leaf(level, child_height, leaf_data);
+		draw_tree_recursion(level - 1, child_height, child_radius, p);
+		draw_tree_leaf(level, child_height, p);
 	glPopMatrix();
 
 	// 侧面的树枝-3
@@ -71,59 +70,58 @@ void draw_tree_recursion(int level, float height, float radius, tree_leaf leaf_d
 		glRotatef(240, 0, 1, 0);
 		glRotatef(240, 0, 0, 1);
 		glRotatef(90, 1, 0, 0);
-		draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
-		draw_tree_leaf(level, child_height, leaf_data);
+		draw_tree_recursion(level - 1, child_height, child_radius, p);
+		draw_tree_leaf(level, child_height, p);
 	glPopMatrix();
 
 
 }
 
-
-void draw_tree_main(int x, int y, int level, float height, float bottom_radius, float top_radius, tree_leaf leaf_data) {
-	if (level < 1)
+void draw_tree_main(plant p) {
+	if (p.tree_level < 1)
 		return;
 	glPushMatrix();
 		glColor3f(0.8f, 0.7f, 0.5f);
-		glTranslatef(x, 0, y);
+		glTranslatef(p.map_X*4+2, 0, p.map_Z*4+2);
 		glRotatef(270, 1, 0, 0);
 		GLUquadric *qObj = gluNewQuadric();
-		gluCylinder(qObj, bottom_radius, top_radius, height, CYLINDER_SLICES, CYLINDER_STACKS);
+		gluCylinder(qObj, p.tree_big_r, p.tree_little_r, p.tree_height, CYLINDER_SLICES, CYLINDER_STACKS);
 		glRotatef(90, 1, 0, 0);
 
-		float child_height = height / 2;
-		float child_radius = top_radius;
+		float child_height = p.tree_height / 2;
+		float child_radius = p.tree_little_r;
 
 		// 上面的树枝
 		glPushMatrix();
-			glTranslatef(0, height, 0);
-			draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
+			glTranslatef(0, p.tree_height, 0);
+			draw_tree_recursion(p.tree_level - 1, child_height, child_radius, p);
 		glPopMatrix();
 
 		// 侧面的树枝-1
 		glPushMatrix();
-			glTranslatef(0, height / 3 * 2, 0);
+			glTranslatef(0, p.tree_height / 3 * 2, 0);
 			glRotatef(60, 1, 0, 0);
-			draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
+			draw_tree_recursion(p.tree_level - 1, child_height, child_radius, p);
 		glPopMatrix();
 
 		// 侧面的树枝-2
 		glPushMatrix();
-			glTranslatef(0, height / 3 * 2, 0);
+			glTranslatef(0, p.tree_height / 3 * 2, 0);
 			glRotatef(60, 1, 0, 0);
 			glRotatef(120, 0, 1, 0);
 			glRotatef(120, 0, 0, 1);
 			glRotatef(90, 1, 0, 0);
-			draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
+			draw_tree_recursion(p.tree_level - 1, child_height, child_radius, p);
 		glPopMatrix();
 
 		// 侧面的树枝-3
 		glPushMatrix();
-			glTranslatef(0, height / 3 * 2, 0);
+			glTranslatef(0, p.tree_height / 3 * 2, 0);
 			glRotatef(60, 1, 0, 0);
 			glRotatef(240, 0, 1, 0);
 			glRotatef(240, 0, 0, 1);
 			glRotatef(90, 1, 0, 0);
-			draw_tree_recursion(level - 1, child_height, child_radius, leaf_data);
+			draw_tree_recursion(p.tree_level - 1, child_height, child_radius, p);
 		glPopMatrix();
 
 
@@ -135,17 +133,86 @@ void draw_tree_main(int x, int y, int level, float height, float bottom_radius, 
 
 
 
+void initPlant() {
+	for (int i = 0; i < PLANT_NUM; i++) {
+		for (int j = 0; j < PLANT_NUM; j++) {
+			plant_data[i*PLANT_NUM + j].plant_type = PLANT_TYPE_NONE;
+			plant_data[i*PLANT_NUM + j].map_X = 0;
+			plant_data[i*PLANT_NUM + j].map_Z = 0;
+			plant_data[i*PLANT_NUM + j].tree_level = 0;
+			plant_data[i*PLANT_NUM + j].tree_height = 0.0;
+			plant_data[i*PLANT_NUM + j].tree_big_r = 0.0;
+			plant_data[i*PLANT_NUM + j].tree_little_r = 0.0;
+			plant_data[i*PLANT_NUM + j].tree_leaf_num = 0;
+			plant_data[i*PLANT_NUM + j].tree_leaf_size = 0.0;
+			plant_data[i*PLANT_NUM + j].tree_leaf_type = 0;
+		}
+	}
+	/*plant_data[12 * PLANT_NUM + 12].plant_type = PLANT_TYPE_TREE;
+	plant_data[12 * PLANT_NUM + 12].map_X = 12;
+	plant_data[12 * PLANT_NUM + 12].map_Z = 12;
+	plant_data[12 * PLANT_NUM + 12].tree_level = 4;
+	plant_data[12 * PLANT_NUM + 12].tree_height = 5.0;
+	plant_data[12 * PLANT_NUM + 12].tree_big_r = 0.3;
+	plant_data[12 * PLANT_NUM + 12].tree_little_r = 0.1;
+	plant_data[12 * PLANT_NUM + 12].tree_leaf_num = 5;
+	plant_data[12 * PLANT_NUM + 12].tree_leaf_size = 0.3;
+	plant_data[12 * PLANT_NUM + 12].tree_leaf_type = 1;
 
+	plant_data[12 * PLANT_NUM + 13].plant_type = PLANT_TYPE_TREE;
+	plant_data[12 * PLANT_NUM + 13].map_X = 12;
+	plant_data[12 * PLANT_NUM + 13].map_Z = 14;
+	plant_data[12 * PLANT_NUM + 13].tree_level = 4;
+	plant_data[12 * PLANT_NUM + 13].tree_height = 5.0;
+	plant_data[12 * PLANT_NUM + 13].tree_big_r = 0.3;
+	plant_data[12 * PLANT_NUM + 13].tree_little_r = 0.1;
+	plant_data[12 * PLANT_NUM + 13].tree_leaf_num = 5;
+	plant_data[12 * PLANT_NUM + 13].tree_leaf_size = 0.3;
+	plant_data[12 * PLANT_NUM + 13].tree_leaf_type = 1;*/
+
+}
+
+void savePlant() {
+	plant_stream.open("Data/plantdata", std::ios::out | std::ios::in);
+	if (plant_stream.is_open()) {
+		fprintf(stdout, "Plant file open success\n");
+	}
+	else {
+		fprintf(stderr, "Plant file open fail\n");
+	}
+	plant_stream.write((char*)(plant_data), sizeof(plant)* PLANT_NUM * PLANT_NUM);
+	fprintf(stdout, "Plant file save success\n");
+	plant_stream.close();
+}
+
+
+void readPlant() {
+	plant_stream.open("Data/plantdata", std::ios::out | std::ios::binary | std::ios::in);
+	if (plant_stream.is_open()) {
+		fprintf(stdout, "Plant file open success\n");
+	}
+	else {
+		fprintf(stderr, "Plant file open fail\n");
+	}
+	plant_stream.read((char*)(plant_data), sizeof(plant)* PLANT_NUM * PLANT_NUM);
+	fprintf(stdout, "Plant file save success\n");
+	plant_stream.close();
+}
 
 
 
 
 void render_tree() {
-	//setData();
-	//drawTree(3);
-	tree_leaf leaf_data1;
-	leaf_data1.num = 5;
-	leaf_data1.size = 0.3;
-	leaf_data1.type = 1;
-	draw_tree_main(50, 50, 3, 5.0, 0.3, 0.1, leaf_data1);
+
+	for (int i = 0; i < PLANT_NUM; i++) {
+		for (int j = 0; j < PLANT_NUM; j++) {
+			if (plant_data[i*PLANT_NUM + j].plant_type == PLANT_TYPE_TREE) {
+				draw_tree_main(plant_data[i*PLANT_NUM + j]);
+			}
+			else if (plant_data[i*PLANT_NUM + j].plant_type == PLANT_TYPE_FLOWER) {
+				;
+			}
+		}
+	}
+
 }

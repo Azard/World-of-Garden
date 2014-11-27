@@ -156,6 +156,7 @@ int main(int argc, char** argv) {
 	initKeyBord();
 	initMouse();
 	initScene();
+	initPlant();
 
 	initMapTexture();
 	initTerran();
@@ -169,12 +170,26 @@ int main(int argc, char** argv) {
 	UI->glui = GLUI_Master.create_glui("GLUI", 0, WINDOW_LENGTH + WINDOW_POS_X + 15, WINDOW_POS_Y);
 	UI->panel_terrain = UI->glui->add_panel("Terrain");
 	UI->panel_plant = UI->glui->add_panel("Plant");
+
 	UI->terrain_x = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain x: -");
 	UI->terrain_z = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain z: -");
 	UI->terrain_height_text = UI->glui->add_statictext_to_panel(UI->panel_terrain, "terrain height: -");
 	UI->terrain_height_plus = UI->glui->add_button_to_panel(UI->panel_terrain, "Higher", TERRAIN_HIGHER_BUTTON_ID, control_cb);
 	UI->terrain_height_dec = UI->glui->add_button_to_panel(UI->panel_terrain, "Lower", TERRAIN_LOWER_BUTTON_ID, control_cb);
 	UI->terrain_save = UI->glui->add_button_to_panel(UI->panel_terrain, "Save", TERRAIN_SAVE_BUTTON_ID, control_cb);
+
+	UI->plant_type = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant type: -");
+	UI->plant_x = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant x: -");
+	UI->plant_z = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant z: -");
+	UI->plant_level = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant level: -");
+
+	UI->plant_level_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "level option");
+	UI->plant_level_plus = UI->glui->add_button_to_panel(UI->plant_level_panel, "level plus");
+	UI->glui->add_column_to_panel(UI->plant_level_panel, true);
+	UI->plant_level_dec = UI->glui->add_button_to_panel(UI->plant_level_panel, "level dec");
+
+
+	
 
 
 
@@ -190,8 +205,9 @@ int main(int argc, char** argv) {
 	glui->add_checkbox("Click me");
 	t1->set_name("asd");*/
 
-
-
+	readPlant();
+	
+	
 
 
 	UI->glui->set_main_gfx_window(main_window);
