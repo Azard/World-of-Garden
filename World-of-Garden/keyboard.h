@@ -6,6 +6,7 @@
 #include <GL/glut.h>
 #include "ui.h"
 #include "map.h"
+#include "plants.h"
 
 extern UI_set* UI;
 
@@ -16,6 +17,8 @@ extern float x, y, z;
 extern float lx, ly, lz;
 extern int select_x;
 extern int select_z;
+extern int plant_x;
+extern int plant_z;
 
 extern bool click_left;
 extern bool click_right;

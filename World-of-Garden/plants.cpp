@@ -159,16 +159,16 @@ void initPlant() {
 	plant_data[12 * PLANT_NUM + 12].tree_leaf_size = 0.3;
 	plant_data[12 * PLANT_NUM + 12].tree_leaf_type = 1;
 
-	plant_data[12 * PLANT_NUM + 13].plant_type = PLANT_TYPE_TREE;
-	plant_data[12 * PLANT_NUM + 13].map_X = 12;
-	plant_data[12 * PLANT_NUM + 13].map_Z = 14;
-	plant_data[12 * PLANT_NUM + 13].tree_level = 4;
-	plant_data[12 * PLANT_NUM + 13].tree_height = 5.0;
-	plant_data[12 * PLANT_NUM + 13].tree_big_r = 0.3;
-	plant_data[12 * PLANT_NUM + 13].tree_little_r = 0.1;
-	plant_data[12 * PLANT_NUM + 13].tree_leaf_num = 5;
-	plant_data[12 * PLANT_NUM + 13].tree_leaf_size = 0.3;
-	plant_data[12 * PLANT_NUM + 13].tree_leaf_type = 1;*/
+	plant_data[12 * PLANT_NUM + 14].plant_type = PLANT_TYPE_TREE;
+	plant_data[12 * PLANT_NUM + 14].map_X = 12;
+	plant_data[12 * PLANT_NUM + 14].map_Z = 14;
+	plant_data[12 * PLANT_NUM + 14].tree_level = 4;
+	plant_data[12 * PLANT_NUM + 14].tree_height = 5.0;
+	plant_data[12 * PLANT_NUM + 14].tree_big_r = 0.3;
+	plant_data[12 * PLANT_NUM + 14].tree_little_r = 0.1;
+	plant_data[12 * PLANT_NUM + 14].tree_leaf_num = 5;
+	plant_data[12 * PLANT_NUM + 14].tree_leaf_size = 0.3;
+	plant_data[12 * PLANT_NUM + 14].tree_leaf_type = 1;*/
 
 }
 
@@ -200,6 +200,140 @@ void readPlant() {
 }
 
 
+void select_flush_ui() {
+	std::ostringstream s1;
+	s1 << plant_x;
+	std::string s2 = s1.str();
+	UI->plant_x->set_text(("plant x: " + s2).c_str());
+	s1.str("");
+	s1 << plant_z;
+	s2 = s1.str();
+	UI->plant_z->set_text(("plant z: " + s2).c_str());
+	s1.str("");
+	
+	int get_plant_level = plant_data[plant_x * PLANT_NUM + plant_z].tree_level;
+	s1 << get_plant_level;
+	s2 = s1.str();
+	UI->plant_level->set_text(("plant level: " + s2).c_str());
+	s1.str("");
+
+	int get_plant_type = plant_data[plant_x * PLANT_NUM + plant_z].plant_type;
+	std::string s_get_plant_type = "";
+	if (get_plant_type == PLANT_TYPE_NONE)
+		s_get_plant_type = "none";
+	else if (get_plant_type == PLANT_TYPE_TREE)
+		s_get_plant_type = "tree";
+	else if (get_plant_type == PLANT_TYPE_FLOWER)
+		s_get_plant_type = "flower";
+	UI->plant_type->set_text(("plant type: " + s_get_plant_type).c_str());
+	
+	float get_plant_height = plant_data[plant_x * PLANT_NUM + plant_z].tree_height;
+	std::string s_get_plant_height = "";
+	s1 << get_plant_height;
+	s_get_plant_height = s1.str();
+	UI->plant_height->set_text(("plant height: " + s_get_plant_height).c_str());
+	s1.str("");
+
+	float get_plant_big_radius = plant_data[plant_x * PLANT_NUM + plant_z].tree_big_r;
+	std::string s_get_plant_big_r = "";
+	s1 << get_plant_big_radius;
+	s_get_plant_big_r = s1.str();
+	UI->plant_big_radius->set_text(("plant big r: " + s_get_plant_big_r).c_str());
+	s1.str("");
+
+	float get_plant_small_radius = plant_data[plant_x * PLANT_NUM + plant_z].tree_little_r;
+	std::string s_get_small_big_r = "";
+	s1 << get_plant_small_radius;
+	s_get_small_big_r = s1.str();
+	UI->plant_small_radius->set_text(("plant small r: " + s_get_small_big_r).c_str());
+	s1.str("");
+
+	int get_plant_leaf_num = plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_num;
+	s1 << get_plant_leaf_num;
+	s2 = s1.str();
+	UI->plant_leaf_num->set_text(("leaf number: " + s2).c_str());
+	s1.str("");
+
+	float get_plant_leaf_size = plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_size;
+	s1 << get_plant_leaf_size;
+	s2 = s1.str();
+	UI->plant_leaf_size->set_text(("leaf size: " + s2).c_str());
+	s1.str("");
+
+	int get_plant_leaf_type = plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_type;
+	s2 = "-";
+	if (get_plant_leaf_type == TREE_LEAF_PINE)
+		s2 = "pine";
+	else if (get_plant_leaf_type == TREE_LEAF_SAKURA)
+		s2 = "sakura";
+	UI->plant_leaf_type->set_text(("leaf type: " + s2).c_str());
+	s1.str("");
+
+
+}
+
+
+void ops_delete_plant() {
+	plant_data[plant_x * PLANT_NUM + plant_z].plant_type = PLANT_TYPE_NONE;
+	select_flush_ui();
+}
+
+void ops_create_tree() {
+	plant_data[plant_x * PLANT_NUM + plant_z].plant_type = PLANT_TYPE_TREE;
+	plant_data[plant_x * PLANT_NUM + plant_z].map_X = plant_x;
+	plant_data[plant_x * PLANT_NUM + plant_z].map_Z = plant_z;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_level = 2;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_big_r = 0.3;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_little_r = 0.1;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_height = 5.0;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_num = 5;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_size = 0.3;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_type = 1;
+	select_flush_ui();
+}
+
+
+void ops_tree_level(int delta) {
+	if (select_x < 0 || select_z < 0)
+		return;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_level += delta;
+	select_flush_ui();
+}
+
+void ops_tree_height(std::string input) {
+	float new_height = atof(input.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_height = new_height;
+	select_flush_ui();
+}
+
+void ops_tree_big_radius(std::string input) {
+	float new_radius = atof(input.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_big_r = new_radius;
+	select_flush_ui();
+}
+
+void ops_tree_small_radius(std::string input) {
+	float new_radius = atof(input.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_little_r = new_radius;
+	select_flush_ui();
+}
+
+void ops_tree_leaf_num(std::string input) {
+	float new_num = atof(input.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_num = new_num;
+	select_flush_ui();
+}
+
+void ops_tree_leaf_size(std::string input) {
+	float new_size = atof(input.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_size = new_size;
+	select_flush_ui();
+}
+
+void ops_tree_leaf_type(int input) {
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_type = input;
+	select_flush_ui();
+}
 
 
 void render_tree() {

@@ -9,6 +9,8 @@ float x = 0.0f, y = 1.75f, z = 5.0f;
 float lx = 0.0f, ly = 0.0f, lz = -1.0f;
 int select_x = -1;
 int select_z = -1;
+int plant_x = -1;
+int plant_z = -1;
 
 
 void flush_view(float ang_p, float ang_u) {
@@ -90,19 +92,23 @@ void select_this_land()
 		select_z--;
 	else
 		select_z++;
+	plant_x = (select_x-1) / 4;// 1~4=0, 5~8=1, 9~12=2
+	plant_z = (select_z-1) / 4;
 
-	std::ostringstream s1, s2, s4;
+	std::ostringstream s1;
 	s1 << select_x;
-	std::string s3 = s1.str();
-	UI->terrain_x->set_text(("terrain x: " + s3).c_str());
-	s2 << select_z;
-	s3 = s2.str();
-	UI->terrain_z->set_text(("terrain z: " + s3).c_str());
+	std::string s2 = s1.str();
+	UI->terrain_x->set_text(("terrain x: " + s2).c_str());
+	s1.str("");
+	s1 << select_z;
+	s2 = s1.str();
+	UI->terrain_z->set_text(("terrain z: " + s2).c_str());
 	int s_height = get_terran_height(select_x, select_z);
-	s4 << s_height;
-	s3 = s4.str();
-	UI->terrain_height_text->set_text(("terrain height: " + s3).c_str());
-
+	s1.str("");
+	s1 << s_height;
+	s2 = s1.str();
+	UI->terrain_height_text->set_text(("terrain height: " + s2).c_str());
+	select_flush_ui();
 
 	fprintf(stdout, "select, x:%d, z:%d\n", select_x, select_z);
 }

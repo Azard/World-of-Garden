@@ -15,10 +15,10 @@
 #include "plants.h"
 #include "ui.h"
 
-#define WINDOW_POS_X	300
-#define WINDOW_POS_Y	150
-#define WINDOW_LENGTH	1024
-#define WINDOW_WIDTH	768
+#define WINDOW_POS_X	0
+#define WINDOW_POS_Y	0
+#define WINDOW_LENGTH	800
+#define WINDOW_WIDTH	600
 
 GLint snowman_display_list;
 int main_window;
@@ -131,6 +131,41 @@ void control_cb(int control) {
 	case TERRAIN_SAVE_BUTTON_ID:
 		terrain_save();
 		break;
+	case PLANT_LEVEL_PLUS_BUTTON_ID:
+		ops_tree_level(1);
+		break;
+	case PLANT_LEVEL_DEC_BUTTON_ID:
+		ops_tree_level(-1);
+		break;
+	case PLANT_SAVE_BUTTON_ID:
+		savePlant();
+		break;
+	case PLANT_CREATE_TREE_BUTTON_ID:
+		ops_create_tree();
+		break;;
+	case PLANT_CREATE_FLOWER_BUTTON_ID:
+		;
+	case PLANT_DELETE_BUTTON_ID:
+		ops_delete_plant();
+		break;
+	case PLANT_CHANGE_HEIGHT_BUTTON_ID:
+		ops_tree_height(std::string(UI->plant_edit_height->get_text()));
+		break;
+	case PLANT_CHANGE_BIG_R_BUTTON_ID:
+		ops_tree_big_radius(std::string(UI->plant_edit_big_r->get_text()));
+		break;
+	case PLANT_CHANGE_SMALL_R_BUTTON_ID:
+		ops_tree_small_radius(std::string(UI->plant_edit_small_r->get_text()));
+		break;
+	case PLANT_CHANGE_LEAF_NUM_BUTTON_ID:
+		ops_tree_leaf_num(std::string(UI->plant_edit_leaf_num->get_text()));
+		break;
+	case PLANT_CHANGE_LEAF_SIZE_BUTTON_ID:
+		ops_tree_leaf_size(std::string(UI->plant_edit_leaf_size->get_text()));
+		break;
+	case PLANT_CHANGE_LEAF_TYPE_BUTTON_ID:
+		ops_tree_leaf_type(UI->plant_list_leaf_type->get_int_val());
+		break;
 	}
 }
 
@@ -166,7 +201,7 @@ int main(int argc, char** argv) {
 	//glutIdleFunc(render_scene);
 
 
-	// GLUI模块
+	// GLUI terrain部分
 	UI->glui = GLUI_Master.create_glui("GLUI", 0, WINDOW_LENGTH + WINDOW_POS_X + 15, WINDOW_POS_Y);
 	UI->panel_terrain = UI->glui->add_panel("Terrain");
 	UI->panel_plant = UI->glui->add_panel("Plant");
@@ -178,33 +213,65 @@ int main(int argc, char** argv) {
 	UI->terrain_height_dec = UI->glui->add_button_to_panel(UI->panel_terrain, "Lower", TERRAIN_LOWER_BUTTON_ID, control_cb);
 	UI->terrain_save = UI->glui->add_button_to_panel(UI->panel_terrain, "Save", TERRAIN_SAVE_BUTTON_ID, control_cb);
 
+	// GLUI plant部分
 	UI->plant_type = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant type: -");
 	UI->plant_x = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant x: -");
 	UI->plant_z = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant z: -");
 	UI->plant_level = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant level: -");
-
-	UI->plant_level_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "level option");
-	UI->plant_level_plus = UI->glui->add_button_to_panel(UI->plant_level_panel, "level plus");
-	UI->glui->add_column_to_panel(UI->plant_level_panel, true);
-	UI->plant_level_dec = UI->glui->add_button_to_panel(UI->plant_level_panel, "level dec");
-
-
+	UI->plant_height = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant height: -");
+	UI->plant_big_radius = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant big r: -");
+	UI->plant_small_radius = UI->glui->add_statictext_to_panel(UI->panel_plant, "plant small r: -");
+	UI->plant_leaf_num = UI->glui->add_statictext_to_panel(UI->panel_plant, "leaf number: -");
+	UI->plant_leaf_size = UI->glui->add_statictext_to_panel(UI->panel_plant, "leaf size: -");
+	UI->plant_leaf_type = UI->glui->add_statictext_to_panel(UI->panel_plant, "leaf type: -");
 	
 
+	UI->plant_delete = UI->glui->add_button_to_panel(UI->panel_plant, "Delete", PLANT_DELETE_BUTTON_ID, control_cb);
+
+	// Create Panel
+	UI->plant_create_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "create");
+	UI->plant_create_tree = UI->glui->add_button_to_panel(UI->plant_create_panel, "create tree", PLANT_CREATE_TREE_BUTTON_ID, control_cb);
+	UI->glui->add_column_to_panel(UI->plant_create_panel, true);
+	UI->plant_create_flower = UI->glui->add_button_to_panel(UI->plant_create_panel, "create flower", PLANT_CREATE_FLOWER_BUTTON_ID, control_cb);
+
+	// Level panel
+	UI->plant_level_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "level option");
+	UI->plant_level_plus = UI->glui->add_button_to_panel(UI->plant_level_panel, "level plus", PLANT_LEVEL_PLUS_BUTTON_ID, control_cb);
+	UI->glui->add_column_to_panel(UI->plant_level_panel, true);
+	UI->plant_level_dec = UI->glui->add_button_to_panel(UI->plant_level_panel, "level dec", PLANT_LEVEL_DEC_BUTTON_ID, control_cb);
+
+	//Height panel
+	UI->plant_height_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "change height");
+	UI->plant_edit_height = UI->glui->add_edittext_to_panel(UI->plant_height_panel, "height:");
+	UI->glui->add_column_to_panel(UI->plant_height_panel);
+	UI->plant_change_height = UI->glui->add_button_to_panel(UI->plant_height_panel, "change", PLANT_CHANGE_HEIGHT_BUTTON_ID, control_cb);
+
+	// radius panel
+	UI->plant_r_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "radius option");
+	UI->plant_edit_big_r = UI->glui->add_edittext_to_panel(UI->plant_r_panel, "big    radius:");
+	UI->plant_edit_small_r = UI->glui->add_edittext_to_panel(UI->plant_r_panel, "small radius:");
+	UI->glui->add_column_to_panel(UI->plant_r_panel);
+	UI->plant_change_big_r = UI->glui->add_button_to_panel(UI->plant_r_panel, "change", PLANT_CHANGE_BIG_R_BUTTON_ID, control_cb);
+	UI->plant_change_small_r = UI->glui->add_button_to_panel(UI->plant_r_panel, "change", PLANT_CHANGE_SMALL_R_BUTTON_ID, control_cb);
+
+	// leaf panel
+	UI->plant_leaf_panel = UI->glui->add_panel_to_panel(UI->panel_plant, "leaf option");
+	UI->plant_edit_leaf_num = UI->glui->add_edittext_to_panel(UI->plant_leaf_panel, "number:");
+	UI->plant_edit_leaf_size = UI->glui->add_edittext_to_panel(UI->plant_leaf_panel, "size:");
+	UI->plant_list_leaf_type = UI->glui->add_listbox_to_panel(UI->plant_leaf_panel, "        type:");
+	UI->plant_list_leaf_type->add_item(TREE_LEAF_PINE, "pine");
+	UI->plant_list_leaf_type->add_item(TREE_LEAF_SAKURA, "sakura");
+	UI->glui->add_column_to_panel(UI->plant_leaf_panel);
+	UI->plant_leaf_num_button = UI->glui->add_button_to_panel(UI->plant_leaf_panel, "change", PLANT_CHANGE_LEAF_NUM_BUTTON_ID, control_cb);
+	UI->plant_leaf_size_button = UI->glui->add_button_to_panel(UI->plant_leaf_panel, "change", PLANT_CHANGE_LEAF_SIZE_BUTTON_ID, control_cb);
+	UI->plant_leaf_type_button = UI->glui->add_button_to_panel(UI->plant_leaf_panel, "change", PLANT_CHANGE_LEAF_TYPE_BUTTON_ID, control_cb);
 
 
-	/*
-	GLUI_Checkbox* t1 = UI->glui->add_checkbox("Click me", (int*)0, -1, control_cb);
-	GLUI_Panel* p1 = glui->add_panel("123");
-	glui->add_checkbox_to_panel(p1, "asd");d
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	glui->add_checkbox("Click me");
-	t1->set_name("asd");*/
+	// Save
+	UI->plant_save = UI->glui->add_button_to_panel(UI->panel_plant, "Save", PLANT_SAVE_BUTTON_ID, control_cb);
 
+
+	//savePlant();
 	readPlant();
 	
 	
