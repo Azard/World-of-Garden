@@ -1,6 +1,7 @@
 #include "plants.h"
 
 std::fstream plant_stream;
+std::fstream flower_stream;
 plant* plant_data = new plant[PLANT_NUM * PLANT_NUM];
 
 
@@ -48,7 +49,7 @@ void draw_tree_leaf(int level, float height, plant p) {
 		for (int i = 0; i < num; i++) {
 			float t = height / num;
 			glTranslatef(0, t, 0);
-			glutSolidSphere(0.1f, 5, 5);
+			glutSolidSphere(size, 5, 5);
 		}
 		glPopMatrix();
 	}
@@ -159,10 +160,12 @@ void draw_tree_main(plant p) {
 }
 
 
-void draw_flower_main() {
+void draw_flower_main(plant p) {
+	glPushMatrix();
+	glTranslatef(p.map_X * 4 + 2, get_terran_height(p.map_X * 4 + 2, p.map_Z * 4 + 2) / HEIGHT_RATIO, p.map_Z * 4 + 2);
+
 	// »¨¸Ë
 	glPushMatrix();
-		glTranslatef(92, 0, 92);
 		glColor3f(0.3f, 1.0f, 0.3f);
 		glRotatef(270, 1, 0, 0);
 		GLUquadric *qObj = gluNewQuadric();
@@ -172,34 +175,48 @@ void draw_flower_main() {
 
 	// »¨Ð¾
 	glPushMatrix();
-		glTranslatef(92, 2, 92);
+		glTranslatef(0, 2, 0);
 		glColor3f(0.9f, 0.9f, 0.1f);
 		glutSolidSphere(0.1f, 10, 10);
 	glPopMatrix();
 
 	// »¨°ê
-	glPushMatrix();
-		glColor3f(1.0f, 0.2f, 0.2f);
-		glTranslatef(92, 2, 92);
+	if (p.tree_leaf_type == FLOWER_NORMAL) {
+		glPushMatrix();
+		glColor3f(double(p.flower_color_r) / 256.0f, double(p.flower_color_g) / 256.0f, double(p.flower_color_b) / 256.0f);
+		glTranslatef(0, 2, 0);
 		glRotatef(90, 1.0f, 0, 0);
 
-		/*for (int i = 0; i < 6; i++)
-			gluPartialDisk(qObj, 0.0f, 0.5f, 10, 10, 0.0f + 60*i, 30.0f);*/
+		float rotate_gap = 120.0f / (p.tree_level + 1);
+		glRotatef(-60.0, 0, 1.0f, 0);
+		for (int i = 0; i < p.tree_level; i++) {
+			glRotatef(rotate_gap, 0, 1.0f, 0);
+			gluPartialDisk(qObj, 0.0f, p.tree_leaf_size, p.tree_leaf_num, p.tree_leaf_num, 0.1f, 360.0f);
+		}
+		glPopMatrix();
+	}
+	else if (p.tree_leaf_type == FLOWER_SUN) {
+		glPushMatrix();
+		glColor3f(double(p.flower_color_r) / 256.0f, double(p.flower_color_g) / 256.0f, double(p.flower_color_b) / 256.0f);
+		glTranslatef(0, 2, 0);
+		glRotatef(90, 1.0f, 0, 0);
 
-		glRotatef(30, 0, 1.0f, 0);
-		for (int i = 0; i < 6; i++)
-			gluPartialDisk(qObj, 0.0f, 0.5f, 10, 10, 0.0f + 60 * i, 360.0f);
-
-		glRotatef(-60, 0, 1.0f, 0);
-		for (int i = 0; i < 6; i++)
-			gluPartialDisk(qObj, 0.0f, 0.5f, 10, 10, 0.0f + 60 * i, 360.0f);
-
-	glPopMatrix();
+		float num_gap = 360.0f / p.tree_leaf_num;
+		float rotate_gap = 120.0f / (p.tree_level + 1);
+		glRotatef(-60.0, 0, 1.0f, 0);
+		for (int i = 0; i < p.tree_level; i++) {
+			glRotatef(rotate_gap, 0, 1.0f, 0);
+			for (int j = 0; j < p.tree_leaf_num; j++) {
+				gluPartialDisk(qObj, 0.0f, p.tree_leaf_size, p.tree_leaf_num, p.tree_leaf_num, num_gap*j, num_gap / 2);
+			}
+		}
+		glPopMatrix();
+	}
 
 
 	
 
-
+	glPopMatrix();
 }
 
 
@@ -218,29 +235,11 @@ void initPlant() {
 			plant_data[i*PLANT_NUM + j].tree_leaf_num = 0;
 			plant_data[i*PLANT_NUM + j].tree_leaf_size = 0.0;
 			plant_data[i*PLANT_NUM + j].tree_leaf_type = 0;
+			plant_data[i*PLANT_NUM + j].flower_color_r = 0;
+			plant_data[i*PLANT_NUM + j].flower_color_g = 0;
+			plant_data[i*PLANT_NUM + j].flower_color_b = 0;
 		}
 	}
-	/*plant_data[12 * PLANT_NUM + 12].plant_type = PLANT_TYPE_TREE;
-	plant_data[12 * PLANT_NUM + 12].map_X = 12;
-	plant_data[12 * PLANT_NUM + 12].map_Z = 12;
-	plant_data[12 * PLANT_NUM + 12].tree_level = 4;
-	plant_data[12 * PLANT_NUM + 12].tree_height = 5.0;
-	plant_data[12 * PLANT_NUM + 12].tree_big_r = 0.3;
-	plant_data[12 * PLANT_NUM + 12].tree_little_r = 0.1;
-	plant_data[12 * PLANT_NUM + 12].tree_leaf_num = 5;
-	plant_data[12 * PLANT_NUM + 12].tree_leaf_size = 0.3;
-	plant_data[12 * PLANT_NUM + 12].tree_leaf_type = 1;
-
-	plant_data[12 * PLANT_NUM + 14].plant_type = PLANT_TYPE_TREE;
-	plant_data[12 * PLANT_NUM + 14].map_X = 12;
-	plant_data[12 * PLANT_NUM + 14].map_Z = 14;
-	plant_data[12 * PLANT_NUM + 14].tree_level = 4;
-	plant_data[12 * PLANT_NUM + 14].tree_height = 5.0;
-	plant_data[12 * PLANT_NUM + 14].tree_big_r = 0.3;
-	plant_data[12 * PLANT_NUM + 14].tree_little_r = 0.1;
-	plant_data[12 * PLANT_NUM + 14].tree_leaf_num = 5;
-	plant_data[12 * PLANT_NUM + 14].tree_leaf_size = 0.3;
-	plant_data[12 * PLANT_NUM + 14].tree_leaf_type = 1;*/
 
 }
 
@@ -267,7 +266,7 @@ void readPlant() {
 		fprintf(stderr, "Plant file open fail\n");
 	}
 	plant_stream.read((char*)(plant_data), sizeof(plant)* PLANT_NUM * PLANT_NUM);
-	fprintf(stdout, "Plant file save success\n");
+	fprintf(stdout, "Flower file save success\n");
 	plant_stream.close();
 }
 
@@ -302,8 +301,11 @@ void select_flush_ui() {
 		UI->plant_list_leaf_type->add_item(TREE_LEAF_PINE, "pine");
 		UI->plant_list_leaf_type->add_item(TREE_LEAF_SAKURA, "sakura");
 	}
-	else if (get_plant_type == PLANT_TYPE_FLOWER)
+	else if (get_plant_type == PLANT_TYPE_FLOWER) {
 		s_get_plant_type = "flower";
+		UI->plant_list_leaf_type->add_item(FLOWER_NORMAL, "normal");
+		UI->plant_list_leaf_type->add_item(FLOWER_SUN, "sun flower");
+	}
 	UI->plant_type->set_text(("plant type: " + s_get_plant_type).c_str());
 	
 	float get_plant_height = plant_data[plant_x * PLANT_NUM + plant_z].tree_height;
@@ -366,12 +368,34 @@ void ops_create_tree() {
 	plant_data[plant_x * PLANT_NUM + plant_z].tree_big_r = 0.3;
 	plant_data[plant_x * PLANT_NUM + plant_z].tree_little_r = 0.1;
 	plant_data[plant_x * PLANT_NUM + plant_z].tree_height = 5.0;
-	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_num = 5;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_num = 2;
 	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_size = 0.3;
 	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_type = 1;
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_r = 0;
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_g = 0;
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_b = 0;
+	
+
 	select_flush_ui();
 }
 
+void ops_create_flower() {
+	plant_data[plant_x * PLANT_NUM + plant_z].plant_type = PLANT_TYPE_FLOWER;
+	plant_data[plant_x * PLANT_NUM + plant_z].map_X = plant_x;
+	plant_data[plant_x * PLANT_NUM + plant_z].map_Z = plant_z;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_level = 2;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_big_r = 0.3;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_little_r = 0.1;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_height = 5.0;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_num = 5;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_size = 0.3;
+	plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_type = 1;
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_r = 220;
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_g = 20;
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_b = 20;
+
+	select_flush_ui();
+}
 
 void ops_tree_level(int delta) {
 	if (select_x < 0 || select_z < 0)
@@ -415,6 +439,13 @@ void ops_tree_leaf_type(int input) {
 	select_flush_ui();
 }
 
+void ops_flower_color(std::string r, std::string g, std::string b) {
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_r = atoi(r.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_g = atoi(g.c_str());
+	plant_data[plant_x * PLANT_NUM + plant_z].flower_color_b = atoi(b.c_str());
+	select_flush_ui();
+}
+
 
 void render_plant() {
 
@@ -424,7 +455,7 @@ void render_plant() {
 				draw_tree_main(plant_data[i*PLANT_NUM + j]);
 			}
 			else if (plant_data[i*PLANT_NUM + j].plant_type == PLANT_TYPE_FLOWER) {
-				;
+				draw_flower_main(plant_data[i*PLANT_NUM + j]);
 			}
 		}
 	}

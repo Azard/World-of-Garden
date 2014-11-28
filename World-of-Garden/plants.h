@@ -15,8 +15,7 @@
 
 enum {PLANT_TYPE_NONE, PLANT_TYPE_TREE, PLANT_TYPE_FLOWER};
 enum {TREE_LEAF_PINE=1, TREE_LEAF_SAKURA};
-
-
+enum {FLOWER_NORMAL=1, FLOWER_SUN};
 
 struct plant {
 	int plant_type;
@@ -31,15 +30,11 @@ struct plant {
 	float tree_leaf_size;
 	int tree_leaf_type;
 
-
+	int flower_color_r;
+	int flower_color_g;
+	int flower_color_b;
 };
 
-
-struct tree_leaf {
-	int num;
-	float size;
-	int type;
-};
 
 
 void initPlant();
@@ -47,8 +42,7 @@ void savePlant();
 void readPlant();
 void render_plant();
 void draw_tree_main(plant p);
-
-void draw_flower_main();
+void draw_flower_main(plant p);
 
 void select_flush_ui();
 
@@ -63,6 +57,7 @@ void ops_tree_small_radius(std::string input);
 void ops_tree_leaf_num(std::string input);
 void ops_tree_leaf_size(std::string input);
 void ops_tree_leaf_type(int input);
+void ops_flower_color(std::string r, std::string g, std::string b);
 
 
 #endif

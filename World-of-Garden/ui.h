@@ -22,11 +22,13 @@
 #define PLANT_CHANGE_LEAF_NUM_BUTTON_ID 13
 #define PLANT_CHANGE_LEAF_SIZE_BUTTON_ID 14
 #define PLANT_CHANGE_LEAF_TYPE_BUTTON_ID 15
+#define PLANT_CHANGE_COLOR_BUTTON_ID 16
 
 struct UI_set {
 	GLUI* glui;
 	GLUI_Panel* panel_terrain;
 	GLUI_Panel* panel_plant;
+	GLUI_Panel* panel_data;
 
 	GLUI_StaticText* terrain_x;
 	GLUI_StaticText* terrain_z;
@@ -71,7 +73,11 @@ struct UI_set {
 	GLUI_Listbox* plant_list_leaf_type;
 	GLUI_Button* plant_leaf_type_button;
 
-
+	GLUI_Panel* plant_color_panel;
+	GLUI_EditText* plant_edit_color_r;
+	GLUI_EditText* plant_edit_color_g;
+	GLUI_EditText* plant_edit_color_b;
+	GLUI_Button* plant_color_button;
 
 
 	GLUI_Button* plant_save;
