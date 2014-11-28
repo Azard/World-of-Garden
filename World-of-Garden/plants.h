@@ -42,10 +42,6 @@ struct tree_leaf {
 };
 
 
-
-
-
-
 void initPlant();
 void savePlant();
 void readPlant();

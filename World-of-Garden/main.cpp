@@ -174,7 +174,7 @@ void control_cb(int control) {
 
 
 int main(int argc, char** argv) {
-	
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);

@@ -158,7 +158,47 @@ void draw_tree_main(plant p) {
 	glPopMatrix();
 }
 
+
 void draw_flower_main() {
+	// »¨¸Ë
+	glPushMatrix();
+		glTranslatef(92, 0, 92);
+		glColor3f(0.3f, 1.0f, 0.3f);
+		glRotatef(270, 1, 0, 0);
+		GLUquadric *qObj = gluNewQuadric();
+		gluCylinder(qObj, 0.02f, 0.02f, 1.9f, 10, 10);
+		glRotatef(90, 1, 0, 0);
+	glPopMatrix();
+
+	// »¨Ð¾
+	glPushMatrix();
+		glTranslatef(92, 2, 92);
+		glColor3f(0.9f, 0.9f, 0.1f);
+		glutSolidSphere(0.1f, 10, 10);
+	glPopMatrix();
+
+	// »¨°ê
+	glPushMatrix();
+		glColor3f(1.0f, 0.2f, 0.2f);
+		glTranslatef(92, 2, 92);
+		glRotatef(90, 1.0f, 0, 0);
+
+		/*for (int i = 0; i < 6; i++)
+			gluPartialDisk(qObj, 0.0f, 0.5f, 10, 10, 0.0f + 60*i, 30.0f);*/
+
+		glRotatef(30, 0, 1.0f, 0);
+		for (int i = 0; i < 6; i++)
+			gluPartialDisk(qObj, 0.0f, 0.5f, 10, 10, 0.0f + 60 * i, 360.0f);
+
+		glRotatef(-60, 0, 1.0f, 0);
+		for (int i = 0; i < 6; i++)
+			gluPartialDisk(qObj, 0.0f, 0.5f, 10, 10, 0.0f + 60 * i, 360.0f);
+
+	glPopMatrix();
+
+
+	
+
 
 }
 
