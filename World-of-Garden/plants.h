@@ -42,11 +42,17 @@ struct tree_leaf {
 };
 
 
+
+
+
+
 void initPlant();
 void savePlant();
 void readPlant();
-void render_tree();
+void render_plant();
 void draw_tree_main(plant p);
+
+void draw_flower_main();
 
 void select_flush_ui();
 

@@ -17,8 +17,8 @@
 
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
-#define WINDOW_LENGTH	800
-#define WINDOW_WIDTH	600
+#define WINDOW_LENGTH	1024
+#define WINDOW_WIDTH	768
 
 GLint snowman_display_list;
 int main_window;
@@ -79,9 +79,11 @@ GLuint createSnowman() {
 
 void initScene() {
 	// 第一视角初始位置
-	x = 64;
-	y = 10;
-	z = 64;
+	//x = 64;
+	x = 90;
+	y = 5;
+	z = 90;
+	//z = 64;
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
@@ -107,9 +109,9 @@ void render_scene(void) {
 	render_height_map();
 	render_wall();
 	render_sky();
+	render_plant();
 
-	render_tree();
-
+	draw_flower_main();
 
 	if (glutGetWindow() != main_window)
 		glutSetWindow(main_window);
@@ -259,13 +261,10 @@ int main(int argc, char** argv) {
 	UI->plant_edit_leaf_num = UI->glui->add_edittext_to_panel(UI->plant_leaf_panel, "number:");
 	UI->plant_edit_leaf_size = UI->glui->add_edittext_to_panel(UI->plant_leaf_panel, "size:");
 	UI->plant_list_leaf_type = UI->glui->add_listbox_to_panel(UI->plant_leaf_panel, "        type:");
-	UI->plant_list_leaf_type->add_item(TREE_LEAF_PINE, "pine");
-	UI->plant_list_leaf_type->add_item(TREE_LEAF_SAKURA, "sakura");
 	UI->glui->add_column_to_panel(UI->plant_leaf_panel);
 	UI->plant_leaf_num_button = UI->glui->add_button_to_panel(UI->plant_leaf_panel, "change", PLANT_CHANGE_LEAF_NUM_BUTTON_ID, control_cb);
 	UI->plant_leaf_size_button = UI->glui->add_button_to_panel(UI->plant_leaf_panel, "change", PLANT_CHANGE_LEAF_SIZE_BUTTON_ID, control_cb);
 	UI->plant_leaf_type_button = UI->glui->add_button_to_panel(UI->plant_leaf_panel, "change", PLANT_CHANGE_LEAF_TYPE_BUTTON_ID, control_cb);
-
 
 	// Save
 	UI->plant_save = UI->glui->add_button_to_panel(UI->panel_plant, "Save", PLANT_SAVE_BUTTON_ID, control_cb);

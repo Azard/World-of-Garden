@@ -11,17 +11,47 @@ void draw_tree_leaf(int level, float height, plant p) {
 	int num = p.tree_leaf_num;
 	float size = p.tree_leaf_size;
 
-	glBegin(GL_TRIANGLES);
-	{
-		glColor3f(0.1f, 0.7f, 0.1f);
+	if (p.tree_leaf_type == TREE_LEAF_PINE) {
+		glBegin(GL_TRIANGLES);
+		{
+			glColor3f(0.1f, 0.7f, 0.1f);
+			for (int i = 0; i < num; i++) {
+				float t = height / num;
+				glVertex3f(0, t * i, 0);
+				glVertex3f(0, size + t * i, 0);
+				glVertex3f(size, size + t * i, 0);
+			}
+			for (int i = 0; i < num; i++) {
+				float t = height / num;
+				glVertex3f(0, t * i, 0);
+				glVertex3f(0, size + t * i, 0);
+				glVertex3f(0, size + t * i, size);
+			}
+			for (int i = 0; i < num; i++) {
+				float t = height / num;
+				glVertex3f(0, t * i, 0);
+				glVertex3f(0, size + t * i, 0);
+				glVertex3f(0, size + t * i, -size);
+			}
+			for (int i = 0; i < num; i++) {
+				float t = height / num;
+				glVertex3f(0, t * i, 0);
+				glVertex3f(0, size + t * i, 0);
+				glVertex3f(-size, size + t * i, 0);
+			}
+		}
+		glEnd();
+	}
+	else if (p.tree_leaf_type == TREE_LEAF_SAKURA) {
+		glColor3f(0.953f, 0.602f, 0.754f);
+		glPushMatrix();
 		for (int i = 0; i < num; i++) {
 			float t = height / num;
-			glVertex3f(0, t * i, 0);
-			glVertex3f(0, size + t * i, 0);
-			glVertex3f(size, size + t * i, 0);
+			glTranslatef(0, t, 0);
+			glutSolidSphere(0.1f, 5, 5);
 		}
+		glPopMatrix();
 	}
-	glEnd();
 }
 
 void draw_tree_recursion(int level, float height, float radius, plant p) {
@@ -82,7 +112,7 @@ void draw_tree_main(plant p) {
 		return;
 	glPushMatrix();
 		glColor3f(0.8f, 0.7f, 0.5f);
-		glTranslatef(p.map_X*4+2, 0, p.map_Z*4+2);
+		glTranslatef(p.map_X * 4 + 2, get_terran_height(p.map_X * 4 + 2, p.map_Z * 4 + 2) / HEIGHT_RATIO, p.map_Z * 4 + 2);
 		glRotatef(270, 1, 0, 0);
 		GLUquadric *qObj = gluNewQuadric();
 		gluCylinder(qObj, p.tree_big_r, p.tree_little_r, p.tree_height, CYLINDER_SLICES, CYLINDER_STACKS);
@@ -128,7 +158,9 @@ void draw_tree_main(plant p) {
 	glPopMatrix();
 }
 
+void draw_flower_main() {
 
+}
 
 
 
@@ -201,6 +233,10 @@ void readPlant() {
 
 
 void select_flush_ui() {
+
+	UI->plant_list_leaf_type->delete_item(1);
+	UI->plant_list_leaf_type->delete_item(2);
+
 	std::ostringstream s1;
 	s1 << plant_x;
 	std::string s2 = s1.str();
@@ -210,7 +246,7 @@ void select_flush_ui() {
 	s2 = s1.str();
 	UI->plant_z->set_text(("plant z: " + s2).c_str());
 	s1.str("");
-	
+
 	int get_plant_level = plant_data[plant_x * PLANT_NUM + plant_z].tree_level;
 	s1 << get_plant_level;
 	s2 = s1.str();
@@ -221,8 +257,11 @@ void select_flush_ui() {
 	std::string s_get_plant_type = "";
 	if (get_plant_type == PLANT_TYPE_NONE)
 		s_get_plant_type = "none";
-	else if (get_plant_type == PLANT_TYPE_TREE)
+	else if (get_plant_type == PLANT_TYPE_TREE) {
 		s_get_plant_type = "tree";
+		UI->plant_list_leaf_type->add_item(TREE_LEAF_PINE, "pine");
+		UI->plant_list_leaf_type->add_item(TREE_LEAF_SAKURA, "sakura");
+	}
 	else if (get_plant_type == PLANT_TYPE_FLOWER)
 		s_get_plant_type = "flower";
 	UI->plant_type->set_text(("plant type: " + s_get_plant_type).c_str());
@@ -268,6 +307,7 @@ void select_flush_ui() {
 		s2 = "sakura";
 	UI->plant_leaf_type->set_text(("leaf type: " + s2).c_str());
 	s1.str("");
+
 
 
 }
@@ -336,7 +376,7 @@ void ops_tree_leaf_type(int input) {
 }
 
 
-void render_tree() {
+void render_plant() {
 
 	for (int i = 0; i < PLANT_NUM; i++) {
 		for (int j = 0; j < PLANT_NUM; j++) {
