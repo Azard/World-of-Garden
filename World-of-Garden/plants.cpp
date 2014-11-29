@@ -343,15 +343,36 @@ void select_flush_ui() {
 
 	int get_plant_leaf_type = plant_data[plant_x * PLANT_NUM + plant_z].tree_leaf_type;
 	s2 = "-";
-	if (get_plant_leaf_type == TREE_LEAF_PINE)
-		s2 = "pine";
-	else if (get_plant_leaf_type == TREE_LEAF_SAKURA)
-		s2 = "sakura";
+	if (get_plant_type == PLANT_TYPE_TREE) {
+		if (get_plant_leaf_type == TREE_LEAF_PINE)
+			s2 = "pine";
+		else if (get_plant_leaf_type == TREE_LEAF_SAKURA)
+			s2 = "sakura";
+	}
+	else if (get_plant_type == PLANT_TYPE_FLOWER) {
+		if (get_plant_leaf_type == FLOWER_NORMAL)
+			s2 = "normal";
+		else if (get_plant_leaf_type == FLOWER_SUN)
+			s2 = "sun flower";
+	}
 	UI->plant_leaf_type->set_text(("leaf type: " + s2).c_str());
 	s1.str("");
 
-
-
+	int get_color_r = plant_data[plant_x * PLANT_NUM + plant_z].flower_color_r;
+	int get_color_g = plant_data[plant_x * PLANT_NUM + plant_z].flower_color_g;
+	int get_color_b = plant_data[plant_x * PLANT_NUM + plant_z].flower_color_b;
+	s1 << get_color_r;
+	s2 = s1.str();
+	UI->plant_flower_color_r->set_text(("color r: " + s2).c_str());
+	s1.str("");
+	s1 << get_color_g;
+	s2 = s1.str();
+	UI->plant_flower_color_g->set_text(("color g: " + s2).c_str());
+	s1.str("");
+	s1 << get_color_b;
+	s2 = s1.str();
+	UI->plant_flower_color_b->set_text(("color b: " + s2).c_str());
+	s1.str("");
 }
 
 

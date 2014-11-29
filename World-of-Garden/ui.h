@@ -50,6 +50,9 @@ struct UI_set {
 	GLUI_StaticText* plant_leaf_num;
 	GLUI_StaticText* plant_leaf_size;
 	GLUI_StaticText* plant_leaf_type;
+	GLUI_StaticText* plant_flower_color_r;
+	GLUI_StaticText* plant_flower_color_g;
+	GLUI_StaticText* plant_flower_color_b;
 
 	GLUI_Panel* plant_create_panel;
 	GLUI_Button* plant_create_tree;

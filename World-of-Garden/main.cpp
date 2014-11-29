@@ -231,6 +231,9 @@ int main(int argc, char** argv) {
 	UI->plant_leaf_num = UI->glui->add_statictext_to_panel(UI->panel_data, "leaf number: -");
 	UI->plant_leaf_size = UI->glui->add_statictext_to_panel(UI->panel_data, "leaf size: -");
 	UI->plant_leaf_type = UI->glui->add_statictext_to_panel(UI->panel_data, "leaf type: -");
+	UI->plant_flower_color_r = UI->glui->add_statictext_to_panel(UI->panel_data, "color r: -");
+	UI->plant_flower_color_g = UI->glui->add_statictext_to_panel(UI->panel_data, "color g: -");
+	UI->plant_flower_color_b = UI->glui->add_statictext_to_panel(UI->panel_data, "color b: -");
 	
 
 	UI->plant_delete = UI->glui->add_button_to_panel(UI->panel_plant, "Delete", PLANT_DELETE_BUTTON_ID, control_cb);
