@@ -91,7 +91,28 @@ void initScene() {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	snowman_display_list = createSnowman();
+}
 
+void initLight() {
+	GLfloat ambientLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };//白色主光源环境光  
+	GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };//白色主光源漫反射  
+	GLfloat specularLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };//白色主光源镜面光  
+
+	GLfloat lightPos[] = { 50.0f, 10.0f, 50.0f, 1.0f };  //光源位置  
+	GLfloat spotLightPos[] = { 0.0f, 0.0f, 200.0f, 1.0f }; //射灯位置  
+	GLfloat spotDir[] = { 0.0f, 0.0f, -1.0f };            //射灯方向  
+
+	glEnable(GL_LIGHTING);                          //启用光照  
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);   //设置环境光源  
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);   //设置漫反射光源  
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight); //设置镜面光源  
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);      //设置灯光位置  
+	glEnable(GL_LIGHT0);                            //打开白色主光源  
+
+	glEnable(GL_COLOR_MATERIAL);                        //启用材质的颜色跟踪  
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);   //指定材料着色的面  
+	glMaterialfv(GL_FRONT, GL_SPECULAR, specularLight);   //指定材料对镜面光的反应  
+	glMateriali(GL_FRONT, GL_SHININESS, 100);             //指定反射系数  
 }
 
 void render_scene(void) {
@@ -199,10 +220,14 @@ int main(int argc, char** argv) {
 
 	initMapTexture();
 	initTerran();
+	initLight();
 
 	glutReshapeFunc(reshape_init);
 	glutDisplayFunc(render_scene);
 	//glutIdleFunc(render_scene);
+	
+
+
 
 
 	// GLUI terrain部分

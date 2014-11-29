@@ -113,6 +113,13 @@ void select_this_land()
 	fprintf(stdout, "select, x:%d, z:%d\n", select_x, select_z);
 }
 
+void onlight() {
+	glEnable(GL_LIGHTING);
+}
+
+void offlight() {
+	glDisable(GL_LIGHTING);
+}
 
 void initNormalKeys(unsigned char key, int x, int y) {
 	switch (key) {
@@ -138,6 +145,12 @@ void initNormalKeys(unsigned char key, int x, int y) {
 		break;
 	case 'c':
 		select_this_land();
+		break;
+	case 'l':
+		onlight();
+		break;
+	case 'k':
+		offlight();
 		break;
 	}
 }

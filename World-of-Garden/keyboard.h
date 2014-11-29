@@ -36,7 +36,8 @@ void flush_view(float ang_p, float ang_u);
 void move_ab(float i);
 void move_ud(float i);
 void move_lr(float i);
-
+void onlight();
+void offlight();
 
 void initNormalKeys(unsigned char key, int x, int y);
 void initSpecialKeys(int key, int x, int y);
