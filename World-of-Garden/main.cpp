@@ -8,7 +8,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/glui.h>
-#include <Windows>
+#include <Windows.h>
 #include "keyboard.h"
 #include "mouse.h"
 #include "map.h"
