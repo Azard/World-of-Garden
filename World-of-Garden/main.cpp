@@ -23,6 +23,7 @@
 GLint snowman_display_list;
 int main_window;
 UI_set* UI = new UI_set;
+int frame = 0, time = 0, timebase = 0, fps;
 
 void reshape_init(int w, int h)
 {
@@ -79,11 +80,9 @@ GLuint createSnowman() {
 
 void initScene() {
 	// 第一视角初始位置
-	//x = 64;
 	x = 90;
 	y = 5;
 	z = 90;
-	//z = 64;
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
@@ -94,13 +93,11 @@ void initScene() {
 }
 
 void initLight() {
-	GLfloat ambientLight[] = { 0.5f, 0.5f, 0.5f, 1.0f };//白色主光源环境光  
+	GLfloat ambientLight[] = { 0.6f, 0.6f, 0.6f, 1.0f };//白色主光源环境光  
 	GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };//白色主光源漫反射  
 	GLfloat specularLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };//白色主光源镜面光  
 
 	GLfloat lightPos[] = { 50.0f, 10.0f, 50.0f, 1.0f };  //光源位置  
-	GLfloat spotLightPos[] = { 0.0f, 0.0f, 200.0f, 1.0f }; //射灯位置  
-	GLfloat spotDir[] = { 0.0f, 0.0f, -1.0f };            //射灯方向  
 
 	glEnable(GL_LIGHTING);                          //启用光照  
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);   //设置环境光源  
@@ -116,6 +113,7 @@ void initLight() {
 }
 
 void render_scene(void) {
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (int i = 0; i < 2; i++)
@@ -138,6 +136,17 @@ void render_scene(void) {
 	glutPostRedisplay();
 
 	glutSwapBuffers();
+
+
+	// 计算输出fps
+	frame++;
+	time = glutGet(GLUT_ELAPSED_TIME);
+	if (time - timebase > 1000) {
+		fps = frame*1000.0 / (time - timebase);
+		timebase = time;
+		frame = 0;
+		printf("fps: %d\n", fps);
+	}
 }
 
 
@@ -225,7 +234,6 @@ int main(int argc, char** argv) {
 	glutReshapeFunc(reshape_init);
 	glutDisplayFunc(render_scene);
 	//glutIdleFunc(render_scene);
-	
 
 
 
@@ -310,6 +318,8 @@ int main(int argc, char** argv) {
 
 	// Save
 	UI->plant_save = UI->glui->add_button_to_panel(UI->panel_plant, "Save", PLANT_SAVE_BUTTON_ID, control_cb);
+
+	
 
 
 	//savePlant();
