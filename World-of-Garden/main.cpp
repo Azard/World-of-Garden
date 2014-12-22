@@ -14,6 +14,7 @@
 #include "map.h"
 #include "plants.h"
 #include "ui.h"
+#include "particle.h"
 
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
@@ -23,7 +24,8 @@
 GLint snowman_display_list;
 int main_window;
 UI_set* UI = new UI_set;
-int frame = 0, time = 0, timebase = 0, fps;
+int frame = 0, timenow = 0, timeprev = 0, timebase = 0, fps;
+
 
 void reshape_init(int w, int h)
 {
@@ -129,6 +131,7 @@ void render_scene(void) {
 	render_wall();
 	render_sky();
 	render_plant();
+	render_snow();
 
 
 	if (glutGetWindow() != main_window)
@@ -138,14 +141,23 @@ void render_scene(void) {
 	glutSwapBuffers();
 
 
+	updateSnow();
 	// 计算输出fps
+	timenow = glutGet(GLUT_ELAPSED_TIME);
+	
+	// ===============限制FPS===============
+	while (timenow - timeprev < 16) {
+		timenow = glutGet(GLUT_ELAPSED_TIME);
+	}
+	timeprev = timenow;
+	// =====================================
+
 	frame++;
-	time = glutGet(GLUT_ELAPSED_TIME);
-	if (time - timebase > 1000) {
-		fps = frame*1000.0 / (time - timebase);
-		timebase = time;
+	if (timenow - timebase > 1000) {
+		fps = frame*1000.0 / (timenow - timebase);
+		timebase = timenow;
 		frame = 0;
-		printf("fps: %d\n", fps);
+		printf("fps: %d, snow_count: %d\n", fps, snow_active_count);
 	}
 }
 
@@ -221,6 +233,8 @@ int main(int argc, char** argv) {
 	else {
 		fprintf(stdout, "glew loading success\n");
 	}
+
+	srand(time(NULL));
 
 	initKeyBord();
 	initMouse();
