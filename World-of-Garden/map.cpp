@@ -6,6 +6,44 @@ std::fstream map_texture_stream;
 void* terrain = malloc(MAP_SIZE * MAP_SIZE);
 GLuint texture[TEXTURE_NUM];
 
+// 雪斑点对象数组
+Terrain_snow* snow_spot = new Terrain_snow[MAP_SIZE * MAP_SIZE / STEP_SIZE / STEP_SIZE];
+
+Terrain_snow::Terrain_snow()
+{
+	spot_count = 0;
+}
+
+Terrain_snow::~Terrain_snow()
+{}
+
+void Terrain_snow::add_spot(float x, float z)
+{	
+	if (spot_count < MAX_SPOT_PER_TERRAIN) {
+		Spot_pos temp;
+		temp.x = x;
+		temp.z = z;
+		spot_set[spot_count] = temp;
+	}
+	spot_count++;
+}
+
+bool Terrain_snow::is_accumulation()
+{
+	if (spot_count < MAX_SPOT_PER_TERRAIN)
+		return false;
+	return true;
+}
+
+
+
+
+
+
+
+
+
+
 
 void load_terran() {
 	terrain_stream.open("Data/Terrain.raw", std::ios::out | std::ios::binary | std::ios::in);
@@ -99,6 +137,8 @@ void render_height_map()
 			glBegin(GL_QUADS);
 			continue;
 		}
+
+		// 
 		x = X;
 		y = get_terran_height(X, Y);
 		z = Y;

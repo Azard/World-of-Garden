@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 #include <GL/glut.h>
 #include <GL/GLAUX.H>
 #include "keyboard.h"
@@ -15,6 +16,29 @@
 #define HEIGHT_RATIO	10.0f
 #define TEXTURE_NUM		2
 
+#define MAX_SPOT_PER_TERRAIN 10
+struct Spot_pos {
+	float x;
+	float z;
+};
+
+
+class Terrain_snow {
+public:
+	Terrain_snow();
+	~Terrain_snow();
+	void add_spot(float x, float z);
+	bool is_accumulation();
+
+private:
+	int spot_count;
+	Spot_pos spot_set[MAX_SPOT_PER_TERRAIN];
+
+
+
+};
+
+extern Terrain_snow* snow_spot;
 
 
 void load_terran();

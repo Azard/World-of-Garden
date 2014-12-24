@@ -9,10 +9,10 @@
 #include "map.h"
 
 
-class particle {
+class Particle {
 public:
-	particle();
-	~particle();
+	Particle();
+	~Particle();
 	void init();
 	void activate();
 	void update();
@@ -22,6 +22,8 @@ public:
 	bool active;
 
 private:
+	void crash_terrain();
+
 	
 	// 位置
 	float pos_x;
@@ -46,7 +48,7 @@ private:
 
 
 // 雪粒子数组对象
-extern particle* snow;
+extern Particle* snow;
 extern int snow_active_count;
 
 // 雪有关的全局函数

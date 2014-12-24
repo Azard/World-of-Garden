@@ -12,12 +12,12 @@ float particle_z_reverse = 1.0;
 
 // 雪粒子数组
 #define MAX_PARTICLE_NUM 1000
-particle* snow = new particle[MAX_PARTICLE_NUM];
+Particle* snow = new Particle[MAX_PARTICLE_NUM];
 int snow_active_count = 0;
 #define SNOW_ACTIVE_Y 40.0
 
 
-particle::particle()
+Particle::Particle()
 {
 	active = false;
 	pos_x = pos_y = pos_z = 0.0;
@@ -27,10 +27,10 @@ particle::particle()
 	radius = 0.0;
 }
 
-particle::~particle()
+Particle::~Particle()
 {}
 
-void particle::init()
+void Particle::init()
 {
 	active = false;
 	pos_x = pos_y = pos_z = 0.0;
@@ -40,7 +40,7 @@ void particle::init()
 	radius = 0.0;
 }
 
-void particle::activate()
+void Particle::activate()
 {
 	pos_x = rand() * MAP_SIZE / RAND_MAX;
 	pos_z = rand() * MAP_SIZE / RAND_MAX;
@@ -56,7 +56,7 @@ void particle::activate()
 	active = true;
 }
 
-void particle::update()
+void Particle::update()
 {
 	// 速度变化
 	speed_x += accelerate_x - speed_x * particle_x_reverse;
@@ -67,21 +67,61 @@ void particle::update()
 	pos_z += speed_z;
 	pos_y -= speed_y;
 
-	// 碰撞测试
-	// crash
-	if (pos_y <= 0) {
+	// 出界并且低于地面
+	if ((pos_y <= 0) && (pos_x <= 0 || pos_x >= MAP_SIZE || pos_z <= 0 || pos_z >= MAP_SIZE)) {
 		active = false;
 		snow_active_count--;
 	}
+	// 地面碰撞判定，crash_terrain函数内实现了active和count的更新
+	if (active == true) {
+		crash_terrain();
+	}
+	
+
 }
 
-void particle::render()
+void Particle::render()
 {
 	glPushMatrix();
 		glTranslatef(pos_x, pos_y, pos_z);
 		glutSolidSphere(0.1f, 6, 6);
 	glPopMatrix();
 }
+
+void Particle::crash_terrain() {
+
+	// 线性插值
+	float pos_height = (float)get_terran_height(pos_x, pos_z) / HEIGHT_RATIO;
+	// 减少判断次数
+	if (pos_y - pos_height > 5)
+		return;
+	// 双线性插值
+	int base_x = ((int)pos_x / STEP_SIZE) * STEP_SIZE;
+	int base_z = ((int)pos_z / STEP_SIZE) * STEP_SIZE;
+	float height_0 = (float)get_terran_height(base_x, base_z) / HEIGHT_RATIO;
+	float height_1 = (float)get_terran_height(base_x + STEP_SIZE, base_z) / HEIGHT_RATIO;
+	float height_2 = (float)get_terran_height(base_x + STEP_SIZE, base_z + STEP_SIZE) / HEIGHT_RATIO;
+	float height_3 = (float)get_terran_height(base_x, base_z + STEP_SIZE) / HEIGHT_RATIO;
+	float height_real = (height_0*((float)base_x + STEP_SIZE - pos_x)*((float)base_z + STEP_SIZE - pos_z)
+		+ height_1*(pos_x - (float)base_x)*((float)base_z + STEP_SIZE - pos_z)
+		+ height_2*(pos_x - (float)base_x)*(pos_z - (float)base_z)
+		+ height_3*((float)base_x + STEP_SIZE - pos_x)*(pos_z - (float)base_z))
+		/ (STEP_SIZE * STEP_SIZE);
+	if (pos_y < height_real) {
+		active = false;
+		snow_active_count--;
+	}
+
+	/*
+	if (pos_y < 0) {
+		//printf("error particle, pos_y: %f, height_real: %f\n", pos_y, height_real);
+		//printf("pos_x: %f, pos_z: %f, base_x: %d, base_z: %d\n", pos_x, pos_z, base_x, base_z);
+	}*/
+}
+
+
+
+
 
 
 // 更新雪的数据
