@@ -110,13 +110,11 @@ void Particle::crash_terrain() {
 	if (pos_y < height_real) {
 		active = false;
 		snow_active_count--;
+		// 加入雪到map的spot里
+		int terrain_spot_x = (int)pos_x / STEP_SIZE;
+		int terrain_spot_z = (int)pos_z / STEP_SIZE;
+		snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
 	}
-
-	/*
-	if (pos_y < 0) {
-		//printf("error particle, pos_y: %f, height_real: %f\n", pos_y, height_real);
-		//printf("pos_x: %f, pos_z: %f, base_x: %d, base_z: %d\n", pos_x, pos_z, base_x, base_z);
-	}*/
 }
 
 
