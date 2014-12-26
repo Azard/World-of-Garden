@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <GL/glut.h>
-#include <GL/GLAUX.H>
+#include "glhead.h"
 #include "map.h"
 
 

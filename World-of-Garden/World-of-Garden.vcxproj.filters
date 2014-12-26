@@ -29,6 +29,9 @@
     <ClCompile Include="particle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="glhead.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="keyboard.h">
@@ -47,6 +50,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="particle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="glhead.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

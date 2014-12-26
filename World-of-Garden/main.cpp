@@ -5,16 +5,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/glui.h>
 #include <Windows.h>
+#include "glhead.h"
 #include "keyboard.h"
 #include "mouse.h"
-#include "map.h"
 #include "plants.h"
 #include "ui.h"
 #include "particle.h"
+#include "map.h"
 
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
@@ -95,7 +93,7 @@ void initScene() {
 }
 
 void initLight() {
-	GLfloat ambientLight[] = { 0.6f, 0.6f, 0.6f, 1.0f };//白色主光源环境光  
+	GLfloat ambientLight[] = { 0.4f, 0.4f, 0.4f, 1.0f };//白色主光源环境光  
 	GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };//白色主光源漫反射  
 	GLfloat specularLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };//白色主光源镜面光  
 
@@ -112,6 +110,7 @@ void initLight() {
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);   //指定材料着色的面  
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specularLight);   //指定材料对镜面光的反应  
 	glMateriali(GL_FRONT, GL_SHININESS, 100);             //指定反射系数  
+
 }
 
 void render_scene(void) {
@@ -248,8 +247,6 @@ int main(int argc, char** argv) {
 	glutReshapeFunc(reshape_init);
 	glutDisplayFunc(render_scene);
 	//glutIdleFunc(render_scene);
-
-
 
 
 	// GLUI terrain部分

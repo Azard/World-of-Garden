@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <math.h>
-#include <GL/glut.h>
+#include "glhead.h"
 #include "ui.h"
 #include "map.h"
 #include "plants.h"

@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <iostream>
-#include <GL/glut.h>
-#include <GL/GLAUX.H>
+#include "glhead.h"
 #include "map.h"
 
 #define PLANT_NUM		31

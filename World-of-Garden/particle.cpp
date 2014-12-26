@@ -11,10 +11,10 @@ float particle_x_reverse = 1.0;
 float particle_z_reverse = 1.0;
 
 // Ñ©Á£×ÓÊý×é
-#define MAX_PARTICLE_NUM 1000
+#define MAX_PARTICLE_NUM 1
 Particle* snow = new Particle[MAX_PARTICLE_NUM];
 int snow_active_count = 0;
-#define SNOW_ACTIVE_Y 40.0
+#define SNOW_ACTIVE_Y 10.0
 
 
 Particle::Particle()
@@ -42,8 +42,12 @@ void Particle::init()
 
 void Particle::activate()
 {
-	pos_x = rand() * MAP_SIZE / RAND_MAX;
-	pos_z = rand() * MAP_SIZE / RAND_MAX;
+	//pos_x = rand() * MAP_SIZE / RAND_MAX;
+	//pos_z = rand() * MAP_SIZE / RAND_MAX;
+	
+	pos_x = (rand() * MAP_SIZE / RAND_MAX) % 4 + 4;
+	pos_z = (rand() * MAP_SIZE / RAND_MAX) % 4 + 4;
+
 	pos_y = SNOW_ACTIVE_Y;
 	speed_x = 0.0;
 	speed_y = 0.0;

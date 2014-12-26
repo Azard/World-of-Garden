@@ -66,6 +66,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="glhead.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="map.cpp" />
@@ -74,6 +75,7 @@
     <ClCompile Include="plants.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="glhead.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="mouse.h" />

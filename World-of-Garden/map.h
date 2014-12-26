@@ -7,14 +7,13 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <GL/glut.h>
-#include <GL/GLAUX.H>
 #include "keyboard.h"
+#include "glhead.h"
 
 #define MAP_SIZE		128
 #define STEP_SIZE		4
 #define HEIGHT_RATIO	10.0f
-#define TEXTURE_NUM		2
+#define TEXTURE_NUM		4
 
 #define MAX_SPOT_PER_TERRAIN 10
 struct Spot_pos {
@@ -29,11 +28,14 @@ public:
 	~Terrain_snow();
 	void add_spot(float x, float z);
 	bool is_accumulation();
-
-private:
+	
+	
 	int spot_count;
 	Spot_pos spot_set[MAX_SPOT_PER_TERRAIN];
 
+
+private:
+	
 
 
 };

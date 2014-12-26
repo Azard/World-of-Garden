@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <GL/glut.h>
-#include <GL/glui.h>
+#include "glhead.h"
 
 #define TERRAIN_HIGHER_BUTTON_ID 1
 #define TERRAIN_LOWER_BUTTON_ID 2
