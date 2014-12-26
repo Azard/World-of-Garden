@@ -1,3 +1,6 @@
+#ifndef MOUSEH
+#define MOUSEH
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -22,3 +25,5 @@ void initMouseClick(int button, int state, int x, int y);
 void initMouseClickMove(int x, int y);
 void initMouseMove(int x, int y);
 void initMouse();
+
+#endif

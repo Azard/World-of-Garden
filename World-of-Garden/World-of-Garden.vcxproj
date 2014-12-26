@@ -73,6 +73,7 @@
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="plants.cpp" />
+    <ClCompile Include="screenui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glhead.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="mouse.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="plants.h" />
+    <ClInclude Include="screenui.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

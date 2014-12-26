@@ -1,3 +1,6 @@
+#ifndef KEYBOARDH
+#define KEYBOARDH
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <sstream>
@@ -44,3 +47,5 @@ void allgrassland();
 void initNormalKeys(unsigned char key, int x, int y);
 void initSpecialKeys(int key, int x, int y);
 void initKeyBord();
+
+#endif
