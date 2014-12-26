@@ -93,7 +93,7 @@ void initScene() {
 }
 
 void initLight() {
-	GLfloat ambientLight[] = { 0.4f, 0.4f, 0.4f, 1.0f };//白色主光源环境光  
+	GLfloat ambientLight[] = { 0.3f, 0.3f, 0.3f, 1.0f };//白色主光源环境光  
 	GLfloat diffuseLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };//白色主光源漫反射  
 	GLfloat specularLight[] = { 0.2f, 0.2f, 0.2f, 1.0f };//白色主光源镜面光  
 

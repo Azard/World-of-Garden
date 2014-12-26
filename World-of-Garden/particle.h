@@ -49,6 +49,7 @@ private:
 // 雪粒子数组对象
 extern Particle* snow;
 extern int snow_active_count;
+extern int snow_active_speed;
 
 // 雪有关的全局函数
 void initSnow();

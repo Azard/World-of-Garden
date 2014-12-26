@@ -38,6 +38,8 @@ void move_ud(float i);
 void move_lr(float i);
 void onlight();
 void offlight();
+void allsnowland();
+void allgrassland();
 
 void initNormalKeys(unsigned char key, int x, int y);
 void initSpecialKeys(int key, int x, int y);

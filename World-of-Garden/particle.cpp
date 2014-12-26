@@ -11,10 +11,11 @@ float particle_x_reverse = 1.0;
 float particle_z_reverse = 1.0;
 
 // 雪粒子数组
-#define MAX_PARTICLE_NUM 1
+#define MAX_PARTICLE_NUM 4000
 Particle* snow = new Particle[MAX_PARTICLE_NUM];
 int snow_active_count = 0;
-#define SNOW_ACTIVE_Y 10.0
+int snow_active_speed = 2;
+#define SNOW_ACTIVE_Y 20.0
 
 
 Particle::Particle()
@@ -42,11 +43,11 @@ void Particle::init()
 
 void Particle::activate()
 {
-	//pos_x = rand() * MAP_SIZE / RAND_MAX;
-	//pos_z = rand() * MAP_SIZE / RAND_MAX;
+	pos_x = rand() * MAP_SIZE / RAND_MAX;
+	pos_z = rand() * MAP_SIZE / RAND_MAX;
 	
-	pos_x = (rand() * MAP_SIZE / RAND_MAX) % 4 + 4;
-	pos_z = (rand() * MAP_SIZE / RAND_MAX) % 4 + 4;
+	//pos_x = (rand() * MAP_SIZE / RAND_MAX) % 4 + 88;
+	//pos_z = (rand() * MAP_SIZE / RAND_MAX) % 4 + 80;
 
 	pos_y = SNOW_ACTIVE_Y;
 	speed_x = 0.0;
@@ -114,10 +115,15 @@ void Particle::crash_terrain() {
 	if (pos_y < height_real) {
 		active = false;
 		snow_active_count--;
-		// 加入雪到map的spot里
 		int terrain_spot_x = (int)pos_x / STEP_SIZE;
 		int terrain_spot_z = (int)pos_z / STEP_SIZE;
 		snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
+		// 加入雪到map的spot里
+		/*
+		int terrain_spot_x = (int)pos_x / STEP_SIZE;
+		int terrain_spot_z = (int)pos_z / STEP_SIZE;
+		snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
+		*/
 	}
 }
 
@@ -129,13 +135,13 @@ void Particle::crash_terrain() {
 // 更新雪的数据
 void updateSnow()
 {
-	bool new_active = false;
+	int new_active = 0;
 	for (int i = 0; i < MAX_PARTICLE_NUM; i++) {
 		// 新的粒子生成判定
 		if (snow[i].active == false) {
-			if (new_active == false) {
+			if (new_active < snow_active_speed) {
 				snow[i].activate();
-				new_active = true;
+				new_active++;
 				snow_active_count++;
 			}
 			continue;

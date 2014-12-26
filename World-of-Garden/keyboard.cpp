@@ -121,6 +121,24 @@ void offlight() {
 	glDisable(GL_LIGHTING);
 }
 
+void allsnowland() {
+	int temp_max = MAP_SIZE / STEP_SIZE;
+	for (int i = 0; i < temp_max; i++) {
+		for (int j = 0; j < temp_max; j++) {
+			snow_spot[i + j*temp_max].spot_count = MAX_SPOT_PER_TERRAIN;
+		}
+	}
+}
+
+void allgrassland() {
+	int temp_max = MAP_SIZE / STEP_SIZE;
+	for (int i = 0; i < temp_max; i++) {
+		for (int j = 0; j < temp_max; j++) {
+			snow_spot[i + j*temp_max].spot_count = 0;
+		}
+	}
+}
+
 void initNormalKeys(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27:
@@ -151,6 +169,12 @@ void initNormalKeys(unsigned char key, int x, int y) {
 		break;
 	case 'k':
 		offlight();
+		break;
+	case 'm':
+		allsnowland();
+		break;
+	case 'n':
+		allgrassland();
 		break;
 	}
 }

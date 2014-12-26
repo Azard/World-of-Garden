@@ -13,9 +13,12 @@
 #define MAP_SIZE		128
 #define STEP_SIZE		4
 #define HEIGHT_RATIO	10.0f
-#define TEXTURE_NUM		4
+#define TEXTURE_NUM		12
 
 #define MAX_SPOT_PER_TERRAIN 10
+#define SPOT_PER_HEIGHT 2
+#define SNOW_ADD_HEIGHT 1
+
 struct Spot_pos {
 	float x;
 	float z;
@@ -26,12 +29,11 @@ class Terrain_snow {
 public:
 	Terrain_snow();
 	~Terrain_snow();
-	void add_spot(float x, float z);
-	bool is_accumulation();
-	
+	void add_spot(float pos_x,float pos_z);
+	//bool is_accumulation();
 	
 	int spot_count;
-	Spot_pos spot_set[MAX_SPOT_PER_TERRAIN];
+	//Spot_pos spot_set[MAX_SPOT_PER_TERRAIN];
 
 
 private:

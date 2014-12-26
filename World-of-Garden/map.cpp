@@ -17,24 +17,31 @@ Terrain_snow::Terrain_snow()
 Terrain_snow::~Terrain_snow()
 {}
 
-void Terrain_snow::add_spot(float x, float z)
+void Terrain_snow::add_spot(float pos_x, float pos_z)
 {	
-	if (spot_count < MAX_SPOT_PER_TERRAIN) {
-		Spot_pos temp;
-		temp.x = x;
-		temp.z = z;
-		spot_set[spot_count] = temp;
-	}
 	spot_count++;
+	if (spot_count > MAX_SPOT_PER_TERRAIN && ((spot_count-MAX_SPOT_PER_TERRAIN)%SPOT_PER_HEIGHT==0)) {
+		int terrain_spot_x = ((int)pos_x / STEP_SIZE) * STEP_SIZE;
+		int terrain_spot_z = ((int)pos_z / STEP_SIZE) * STEP_SIZE;
+		for (int i = 0; i <= STEP_SIZE; i++) {
+			for (int j = 0; j <= STEP_SIZE; j++) {
+				int temp_height = get_terran_height(terrain_spot_x + i, terrain_spot_z + j);
+				((unsigned char*)terrain)[terrain_spot_x + i + (terrain_spot_z + j)*MAP_SIZE] = temp_height + SNOW_ADD_HEIGHT;
+			}
+		}
+
+	}
+	
 }
 
+/*
 bool Terrain_snow::is_accumulation()
 {
 	if (spot_count < MAX_SPOT_PER_TERRAIN)
 		return false;
 	return true;
 }
-
+*/
 
 
 
@@ -149,13 +156,13 @@ void render_height_map()
 			
 			glActiveTextureARB(GL_TEXTURE0_ARB);
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, texture[2]);
+			glBindTexture(GL_TEXTURE_2D, texture[0]);
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
 			glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
 
 			glActiveTextureARB(GL_TEXTURE1_ARB);
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, texture[3]);
+			glBindTexture(GL_TEXTURE_2D, texture[1]);
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
 			glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_ADD);
 			
@@ -167,26 +174,26 @@ void render_height_map()
 			x = X;
 			y = get_terran_height(X, Y);
 			z = Y;
-			//glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 0);
-			//glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 0);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 0);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 0);
 			glVertex3f(x, y / HEIGHT_RATIO, z);
 			x = X;
 			y = get_terran_height(X, Y + STEP_SIZE);
 			z = Y + STEP_SIZE;
-			//glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 1, 0);
-			//glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 1, 0);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 1, 0);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 1, 0);
 			glVertex3f(x, y / HEIGHT_RATIO, z);
 			x = X + STEP_SIZE;
 			y = get_terran_height(X + STEP_SIZE, Y + STEP_SIZE);
 			z = Y + STEP_SIZE;
-			//glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 1, 1);
-			//glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 1, 1);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 1, 1);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 1, 1);
 			glVertex3f(x, y / HEIGHT_RATIO, z);
 			x = X + STEP_SIZE;
 			y = get_terran_height(X + STEP_SIZE, Y);
 			z = Y;
-			//glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 1);
-			//glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 1);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 1);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 1);
 			glVertex3f(x, y / HEIGHT_RATIO, z);
 
 
@@ -199,8 +206,8 @@ void render_height_map()
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, texture[0]);
 			
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-			glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_ADD);
+			//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+			//glTexEnvf(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_ADD);
 
 			glBegin(GL_QUADS);
 
@@ -209,11 +216,16 @@ void render_height_map()
 		*/
 
 		
-		// 草地渲染
+		// 草地和雪地渲染
+		Terrain_snow this_terrain_snow = snow_spot[X / STEP_SIZE + Y / STEP_SIZE * MAP_SIZE / STEP_SIZE];
+		int use_texture = this_terrain_snow.spot_count;
+		if (use_texture > MAX_SPOT_PER_TERRAIN) {
+			use_texture = MAX_SPOT_PER_TERRAIN;
+		}
 		glDisable(GL_TEXTURE_2D);
 		glEnd();
 		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glBindTexture(GL_TEXTURE_2D, texture[use_texture]);
 		glBegin(GL_QUADS);
 		x = X;
 		y = get_terran_height(X, Y);
@@ -235,31 +247,6 @@ void render_height_map()
 		z = Y;
 		glTexCoord2f(0.0f, 1.0f);
 		glVertex3f(x, y / HEIGHT_RATIO, z);
-
-		
-		// TODO地面上的spot渲染
-		glDisable(GL_TEXTURE_2D);
-		glEnd();
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glBegin(GL_QUADS);
-		Terrain_snow this_terrain_snow = snow_spot[X/STEP_SIZE + Y/STEP_SIZE * MAP_SIZE / STEP_SIZE];
-		for (int i = 0; i < this_terrain_snow.spot_count; i++) {
-			float spot_x = this_terrain_snow.spot_set[i].x;
-			float spot_z = this_terrain_snow.spot_set[i].z;
-			float spot_y = 0;
-			glTexCoord2f(0.0f, 0.0f);
-			glVertex3f(spot_x, 1, spot_z);
-			glTexCoord2f(1.0f, 0.0f);
-			glVertex3f(spot_x+4, 1, spot_z);
-			glTexCoord2f(1.0f, 1.0f);
-			glVertex3f(spot_x+4, 1, spot_z+4);
-			glTexCoord2f(0.0f, 1.0f);
-			glVertex3f(spot_x, 1, spot_z+4);
-		}
-		
-
-
 	}
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
@@ -271,7 +258,7 @@ void render_wall() {
 	// 画墙
 	disable_color_material();
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
+	glBindTexture(GL_TEXTURE_2D, texture[11]);
 	glBegin(GL_QUADS);
 	{
 		for (int i = 0; i <= 120; i += 8) {
@@ -332,55 +319,39 @@ int LoadGLTextures()
 	int Status = FALSE;
 	AUX_RGBImageRec* TextureImage[TEXTURE_NUM];
 	memset(TextureImage, 0, sizeof(void *)* 1);
+	std::string img_name[TEXTURE_NUM];
+	img_name[0] = "Data/snowgrass_0.bmp";
+	img_name[1] = "Data/snowgrass_1.bmp";
+	img_name[2] = "Data/snowgrass_2.bmp";
+	img_name[3] = "Data/snowgrass_3.bmp";
+	img_name[4] = "Data/snowgrass_4.bmp";
+	img_name[5] = "Data/snowgrass_5.bmp";
+	img_name[6] = "Data/snowgrass_6.bmp";
+	img_name[7] = "Data/snowgrass_7.bmp";
+	img_name[8] = "Data/snowgrass_8.bmp";
+	img_name[9] = "Data/snowgrass_9.bmp";
+	img_name[10] = "Data/snowgrass_10.bmp";
+	img_name[11] = "Data/wall.bmp";
 
-	if (TextureImage[0] = LoadBMP("Data/grass2.bmp")) {
-		Status = TRUE;
-		glGenTextures(1, &texture[0]);
-		glBindTexture(GL_TEXTURE_2D, texture[0]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, TextureImage[0]->sizeX, TextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-	if (TextureImage[0]) {
-		if (TextureImage[0]->data) {
-			free(TextureImage[0]->data);	
+
+	for (int i = 0; i < TEXTURE_NUM; i++) {
+		char* temp_path = new char[img_name[i].size() + 1];
+		memcpy(temp_path, img_name[i].c_str(), img_name[i].size() + 1);
+		if (TextureImage[i] = LoadBMP(temp_path)) {
+			Status = TRUE;
+			glGenTextures(1, &texture[i]);
+			glBindTexture(GL_TEXTURE_2D, texture[i]);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, TextureImage[i]->sizeX, TextureImage[i]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[i]->data);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
-		free(TextureImage[0]);
-	}
-
-	if (TextureImage[1] = LoadBMP("Data/wall.bmp")) {
-		Status = TRUE;
-		glGenTextures(1, &texture[1]);
-		glBindTexture(GL_TEXTURE_2D, texture[1]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, TextureImage[1]->sizeX, TextureImage[1]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[1]->data);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-	if (TextureImage[1]) {
-		if (TextureImage[1]->data) {
-			free(TextureImage[1]->data);
+		if (TextureImage[i]) {
+			if (TextureImage[i]->data) {
+				free(TextureImage[i]->data);
+			}
+			free(TextureImage[i]);
 		}
-		free(TextureImage[1]);
 	}
-
-	if (TextureImage[2] = LoadBMP("Data/snowfloor.bmp")) {
-		Status = TRUE;
-		glGenTextures(1, &texture[2]);
-		glBindTexture(GL_TEXTURE_2D, texture[2]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, TextureImage[2]->sizeX, TextureImage[2]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[2]->data);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-	if (TextureImage[2]) {
-		if (TextureImage[2]->data) {
-			free(TextureImage[2]->data);
-		}
-		free(TextureImage[2]);
-	}
-
-
-
-
 
 	return Status;
 }
