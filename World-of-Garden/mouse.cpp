@@ -18,8 +18,11 @@ void mouse_turn_view(int x, int y) {
 void initMouseClick(int button, int state, int x, int y) {
 	switch (button) {
 	case GLUT_LEFT_BUTTON:
-		if (state == GLUT_DOWN)
+		// ×ó¼ü°´ÏÂ
+		if (state == GLUT_DOWN) {
 			click_left = true;
+			click_screenui(x, y);
+		}
 		else if (state == GLUT_UP)
 			click_left = false;
 		break;
