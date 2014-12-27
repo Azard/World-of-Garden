@@ -13,6 +13,7 @@
 #include "ui.h"
 #include "particle.h"
 #include "map.h"
+#include "screenui.h"
 
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
@@ -131,6 +132,7 @@ void render_scene(void) {
 	render_sky();
 	render_plant();
 	render_snow();
+	render_screenui();
 
 
 	if (glutGetWindow() != main_window)

@@ -13,7 +13,7 @@
 #define MAP_SIZE		128
 #define STEP_SIZE		4
 #define HEIGHT_RATIO	10.0f
-#define TEXTURE_NUM		12
+#define TEXTURE_NUM		16
 
 #define MAX_SPOT_PER_TERRAIN 10
 #define SPOT_PER_HEIGHT 2
@@ -42,6 +42,7 @@ private:
 
 };
 
+extern GLuint texture[TEXTURE_NUM];
 extern Terrain_snow* snow_spot;
 
 

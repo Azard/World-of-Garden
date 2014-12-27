@@ -332,7 +332,10 @@ int LoadGLTextures()
 	img_name[9] = "Data/snowgrass_9.bmp";
 	img_name[10] = "Data/snowgrass_10.bmp";
 	img_name[11] = "Data/wall.bmp";
-
+	img_name[12] = "Data/control_back_0.bmp";
+	img_name[13] = "Data/control_back_1.bmp";
+	img_name[14] = "Data/control_back_2.bmp";
+	img_name[15] = "Data/control_back_3.bmp";
 
 	for (int i = 0; i < TEXTURE_NUM; i++) {
 		char* temp_path = new char[img_name[i].size() + 1];
