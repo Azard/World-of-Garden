@@ -94,12 +94,14 @@ void Particle::render()
 }
 
 void Particle::crash_terrain() {
-
-	// 线性插值
-	float pos_height = (float)get_terran_height(pos_x, pos_z) / HEIGHT_RATIO;
 	// 双线性插值
 	int base_x = ((int)pos_x / STEP_SIZE) * STEP_SIZE;
 	int base_z = ((int)pos_z / STEP_SIZE) * STEP_SIZE;
+	if (base_x <= 0 || base_x >= 127 || base_z <= 0 || base_z >= 127) {
+		active = false;
+		snow_active_count--;
+	}
+
 	float height_0 = (float)get_terran_height(base_x, base_z) / HEIGHT_RATIO;
 	float height_1 = (float)get_terran_height(base_x + STEP_SIZE, base_z) / HEIGHT_RATIO;
 	float height_2 = (float)get_terran_height(base_x + STEP_SIZE, base_z + STEP_SIZE) / HEIGHT_RATIO;

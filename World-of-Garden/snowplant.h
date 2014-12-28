@@ -2,6 +2,7 @@
 #define SNOWPLANTH
 
 #include <vector>
+#include "plants.h"
 #include "map.h"
 #include "glhead.h"
 
