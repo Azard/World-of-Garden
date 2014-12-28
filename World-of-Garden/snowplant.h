@@ -21,6 +21,7 @@ public:
 private:
 	int pos_x;
 	int pos_z;
+	float size;
 	SnowPlantType type;
 
 };
