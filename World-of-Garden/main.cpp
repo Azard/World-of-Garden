@@ -141,7 +141,9 @@ void render_scene(void) {
 
 	glutSwapBuffers();
 
-
+	// 融化
+	thawSnow();
+	// 更新雪的数据
 	updateSnow();
 	// 计算输出fps
 	timenow = glutGet(GLUT_ELAPSED_TIME);
@@ -225,7 +227,7 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
 	glutInitWindowSize(WINDOW_LENGTH, WINDOW_WIDTH);
 	main_window = glutCreateWindow("World Of Garden");
-
+	
 	GLenum err = glewInit();
 	if (err != GLEW_OK) {
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));

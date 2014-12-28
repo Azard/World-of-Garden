@@ -50,6 +50,11 @@ private:
 extern Particle* snow;
 extern int snow_active_count;
 extern int snow_active_speed;
+extern float wind_x_accelerate;
+extern float wind_z_accelerate;
+extern float particle_x_reverse;
+extern float particle_z_reverse;
+extern int snow_active_speed;
 
 // 雪有关的全局函数
 void initSnow();

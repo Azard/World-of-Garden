@@ -26,6 +26,8 @@ void Terrain_snow::add_spot(float pos_x, float pos_z)
 		for (int i = 0; i <= STEP_SIZE; i++) {
 			for (int j = 0; j <= STEP_SIZE; j++) {
 				int temp_height = get_terran_height(terrain_spot_x + i, terrain_spot_z + j);
+				if (terrain_spot_x + i == 0 || terrain_spot_x + i == 128 || terrain_spot_z + j == 0 || terrain_spot_z + j == 128)
+					continue;
 				((unsigned char*)terrain)[terrain_spot_x + i + (terrain_spot_z + j)*MAP_SIZE] = temp_height + SNOW_ADD_HEIGHT;
 			}
 		}
@@ -45,6 +47,37 @@ bool Terrain_snow::is_accumulation()
 
 
 
+
+void thawSnow()
+{
+	if (snow_active_speed > 0)
+		return;
+	bool is_dec = false;
+	// 最多三次随机删减
+	for (int i = 0; i < TRY_DEC_TIMES; i++) {
+		int x_0 = rand() % 32;
+		int y_0 = rand() % 32;
+		Terrain_snow* this_snow_spot = &snow_spot[x_0 + y_0 * 32];
+		if (this_snow_spot->spot_count > 0) {
+			this_snow_spot->spot_count--;
+			// 判断地形是否需要降低
+			if (this_snow_spot->spot_count > MAX_SPOT_PER_TERRAIN && ((this_snow_spot->spot_count - MAX_SPOT_PER_TERRAIN) % SPOT_PER_HEIGHT == 0)) {
+				for (int i = 0; i <= STEP_SIZE; i++) {
+					for (int j = 0; j <= STEP_SIZE; j++) {
+						int temp_height = get_terran_height(4 * x_0 + i, 4 * y_0 + j);
+						if (4 * x_0 + i == 0 || 4 * x_0 + i == 128 || 4 * y_0 + j == 0 || 4 * y_0 + j == 128)
+							continue;
+						if (temp_height - SNOW_ADD_HEIGHT < 0)
+							temp_height = SNOW_ADD_HEIGHT;
+						((unsigned char*)terrain)[4 * x_0 + i + (4 * y_0 + j)*MAP_SIZE] = temp_height - SNOW_ADD_HEIGHT;
+					}
+				}
+			}
+			is_dec = true;
+			break;
+		}
+	}
+}
 
 
 

@@ -97,9 +97,6 @@ void Particle::crash_terrain() {
 
 	// 线性插值
 	float pos_height = (float)get_terran_height(pos_x, pos_z) / HEIGHT_RATIO;
-	// 减少判断次数
-	if (pos_y - pos_height > 5)
-		return;
 	// 双线性插值
 	int base_x = ((int)pos_x / STEP_SIZE) * STEP_SIZE;
 	int base_z = ((int)pos_z / STEP_SIZE) * STEP_SIZE;
@@ -107,6 +104,9 @@ void Particle::crash_terrain() {
 	float height_1 = (float)get_terran_height(base_x + STEP_SIZE, base_z) / HEIGHT_RATIO;
 	float height_2 = (float)get_terran_height(base_x + STEP_SIZE, base_z + STEP_SIZE) / HEIGHT_RATIO;
 	float height_3 = (float)get_terran_height(base_x, base_z + STEP_SIZE) / HEIGHT_RATIO;
+	// 减少判断次数
+	if (pos_y > height_0 && pos_y > height_1 && pos_y > height_2 && pos_y > height_3)
+		return;
 	float height_real = (height_0*((float)base_x + STEP_SIZE - pos_x)*((float)base_z + STEP_SIZE - pos_z)
 		+ height_1*(pos_x - (float)base_x)*((float)base_z + STEP_SIZE - pos_z)
 		+ height_2*(pos_x - (float)base_x)*(pos_z - (float)base_z)
@@ -126,9 +126,6 @@ void Particle::crash_terrain() {
 		*/
 	}
 }
-
-
-
 
 
 

@@ -3,9 +3,6 @@
 
 void render_screenui()
 {
-	
-
-
 	glPushMatrix();
 	glTranslatef(x + UI_DISNTANCE*lx, y - UI_DISNTANCE * ly, z + UI_DISNTANCE * lz);
 	glRotatef(-angle_plane / MY_PI * 180, 0, 1.0f, 0);
