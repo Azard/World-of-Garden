@@ -14,6 +14,7 @@
 #include "particle.h"
 #include "map.h"
 #include "screenui.h"
+#include "snowplant.h"
 
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
@@ -133,6 +134,8 @@ void render_scene(void) {
 	render_plant();
 	render_snow();
 	render_screenui();
+	render_snow_plant();
+	
 
 
 	if (glutGetWindow() != main_window)
@@ -243,6 +246,7 @@ int main(int argc, char** argv) {
 	initMouse();
 	initScene();
 	initPlant();
+	initSnowplant();
 
 	initMapTexture();
 	initTerran();

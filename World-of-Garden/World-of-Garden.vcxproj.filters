@@ -35,6 +35,9 @@
     <ClCompile Include="screenui.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="snowplant.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="keyboard.h">
@@ -59,6 +62,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="screenui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="snowplant.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
