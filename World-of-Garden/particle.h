@@ -6,6 +6,7 @@
 #include <time.h>
 #include "glhead.h"
 #include "map.h"
+#include "snowplant.h"
 
 
 class Particle {
@@ -19,9 +20,11 @@ public:
 
 	// ×´Ì¬
 	bool active;
+	bool attach;
 
 private:
 	void crash_terrain();
+	void crash_plant();
 
 	
 	// Î»ÖÃ

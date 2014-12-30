@@ -20,7 +20,7 @@ int snow_active_speed = 2;
 
 Particle::Particle()
 {
-	active = false;
+	active = attach = false;
 	pos_x = pos_y = pos_z = 0.0;
 	speed_x = speed_y = speed_z = 0.0;
 	accelerate_x = accelerate_y = accelerate_z = 0.0;
@@ -33,7 +33,7 @@ Particle::~Particle()
 
 void Particle::init()
 {
-	active = false;
+	active = attach = false;
 	pos_x = pos_y = pos_z = 0.0;
 	speed_x = speed_y = speed_z = 0.0;
 	accelerate_x = accelerate_y = accelerate_z = 0.0;
@@ -78,11 +78,11 @@ void Particle::update()
 		snow_active_count--;
 	}
 	// 地面碰撞判定，crash_terrain函数内实现了active和count的更新
-	if (active == true) {
+	// 植物碰撞判定
+	if (active == true && attach == false) {
 		crash_terrain();
+		crash_plant();
 	}
-	
-
 }
 
 void Particle::render()
@@ -120,13 +120,80 @@ void Particle::crash_terrain() {
 		int terrain_spot_x = (int)pos_x / STEP_SIZE;
 		int terrain_spot_z = (int)pos_z / STEP_SIZE;
 		snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
-		// 加入雪到map的spot里
-		/*
-		int terrain_spot_x = (int)pos_x / STEP_SIZE;
-		int terrain_spot_z = (int)pos_z / STEP_SIZE;
-		snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
-		*/
 	}
+}
+
+void Particle::crash_plant() {
+	// TODO
+	float origin_pos_x = pos_x - speed_x;
+	float origin_pos_z = pos_z - speed_z;
+	float origin_pos_y = pos_y + speed_y;
+	// 对于每个snow_plant
+	for (unsigned i = 0; i < snow_plant.size(); i++) {
+		float center_x = snow_plant[i].pos_x * 4 + 2;
+		float center_z = snow_plant[i].pos_z * 4 + 2;
+		float size = snow_plant[i].size;
+		// 减少判断
+		if (pos_x < center_x - 10
+			|| pos_x > center_x + 10
+			|| pos_z < center_z - 10
+			|| pos_z > center_z + 10
+			|| pos_y > 8.0 * size)
+			continue;
+
+		// 碰撞判断，判断有无解
+		// 第一层
+	LEVEL_1:
+		if (origin_pos_y < 6.5*size || pos_y > 8.0*size)
+			continue;
+		float form_A = 1 - pow(pos_z / (pos_y - origin_pos_y), 2) - pow(pos_x / (pos_y - origin_pos_y), 2);
+		float form_B = 2 * (pos_z * center_z + pos_x * center_x) / (pos_y - origin_pos_y) - 2 * 8 * size;
+		float form_C = pow(8 * size, 2) - (pos_y * pos_y) * (pow(origin_pos_x, 2) + pow(origin_pos_z, 2)) / pow(pos_y - origin_pos_y, 2)
+			+ 2 * pos_y * (center_z * origin_pos_z + center_x * origin_pos_x) / (pos_y - origin_pos_y) - pow(center_x, 2) - pow(center_z, 2);
+		
+		float delta = pow(form_B, 2) - 4 * form_A * form_C;
+		if (delta < 0)
+			goto LEVEL_2;
+		printf("delta > 0\n");
+		bool bool1_level_1 = false;
+		bool bool2_level_1 = false;
+		float solve1_level_1 = (-form_B + sqrt(delta)) / 2 / form_A;
+		float solve2_level_1 = (-form_B - sqrt(delta)) / 2 / form_A;
+		if (pos_y <= solve1_level_1 && solve1_level_1 < origin_pos_y
+			&& 6.5*size <= solve1_level_1 && solve1_level_1 <= 8.0*size) {
+			bool1_level_1 = true;
+			this->attach = true;
+		}
+		if (pos_y <= solve2_level_1 && solve2_level_1 < origin_pos_y
+			&& 6.5*size <= solve2_level_1 && solve2_level_1 <= 8.0*size) {
+			bool2_level_1 = true;
+			this->attach = true;
+		}
+
+
+
+
+		// 第二层
+	LEVEL_2:
+
+
+	
+
+
+
+
+
+		/*
+		if (pos_y <= 8) {
+			snow_plant[i].particle_set_1.push_back((void*)this);
+			this->attach = true;
+		}
+		*/
+
+		;
+
+	}
+	
 }
 
 
@@ -145,6 +212,8 @@ void updateSnow()
 			}
 			continue;
 		}
+		if (snow[i].attach == true)
+			continue;
 		// 数据更新
 		snow[i].update();
 	}
