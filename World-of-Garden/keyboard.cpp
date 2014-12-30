@@ -176,6 +176,9 @@ void initNormalKeys(unsigned char key, int x, int y) {
 	case 'n':
 		allgrassland();
 		break;
+	case 't':
+		collapse_snow_plant();
+		break;
 	}
 }
 

@@ -31,6 +31,7 @@ private:
 
 void initSnowplant();
 void render_snow_plant();
+void collapse_snow_plant();
 
 extern vector<Snow_plant> snow_plant;
 

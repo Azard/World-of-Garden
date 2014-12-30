@@ -68,3 +68,18 @@ void render_snow_plant()
 		snow_plant[i].render();
 	}
 }
+
+void collapse_snow_plant()
+{
+	for (unsigned i = 0; i < snow_plant.size(); i++) {
+		for (unsigned j = 0; j < snow_plant[i].particle_set_1.size(); j++) {
+			((Particle*)snow_plant[i].particle_set_1[j])->attach = false;
+		}
+		for (unsigned j = 0; j < snow_plant[i].particle_set_2.size(); j++) {
+			((Particle*)snow_plant[i].particle_set_2[j])->attach = false;
+		}
+		for (unsigned j = 0; j < snow_plant[i].particle_set_3.size(); j++) {
+			((Particle*)snow_plant[i].particle_set_3[j])->attach = false;
+		}
+	}
+}
