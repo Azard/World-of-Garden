@@ -13,11 +13,11 @@ void render_screenui()
 	glEnable(GL_TEXTURE_2D);
 	if (snow_active_speed == 0)
 		glBindTexture(GL_TEXTURE_2D, texture[12]);
-	else if (snow_active_speed == 1)
-		glBindTexture(GL_TEXTURE_2D, texture[13]);
 	else if (snow_active_speed == 2)
+		glBindTexture(GL_TEXTURE_2D, texture[13]);
+	else if (snow_active_speed == 4)
 		glBindTexture(GL_TEXTURE_2D, texture[14]);
-	else if (snow_active_speed == 3)
+	else if (snow_active_speed == 6)
 		glBindTexture(GL_TEXTURE_2D, texture[15]);
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 1.0f); glVertex3f(UI_X0, UI_Y0, 0);
@@ -77,12 +77,12 @@ void ui_click_right() {
 
 void ui_click_plus() {
 	printf("click plust\n");
-	if (snow_active_speed < 3)
-		snow_active_speed++;
+	if (snow_active_speed < 6)
+		snow_active_speed+=2;
 }
 
 void ui_click_decrease() {
 	printf("click decrease\n");
 	if (snow_active_speed > 0)
-		snow_active_speed--;
+		snow_active_speed-=2;
 }

@@ -14,7 +14,7 @@ float particle_z_reverse = 1.0;
 #define MAX_PARTICLE_NUM 4000
 Particle* snow = new Particle[MAX_PARTICLE_NUM];
 int snow_active_count = 0;
-int snow_active_speed = 4;
+int snow_active_speed = 2;
 #define SNOW_ACTIVE_Y 20.0
 
 
@@ -234,8 +234,10 @@ void Particle::crash_plant() {
 			snow_plant[i].particle_set_3.push_back((void*)this);
 		}
 
+
 	END:
 		;
+
 	}
 	
 }
