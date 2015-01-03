@@ -52,6 +52,30 @@ void Snow_plant::render()
 	glPopMatrix();
 }
 
+void Snow_plant::collapse_snow_plant_level_1()
+{
+	for (unsigned i = 0; i < particle_set_1.size(); i++) {
+		((Particle*)particle_set_1[i])->attach = false;
+	}
+	particle_set_1.clear();
+}
+
+void Snow_plant::collapse_snow_plant_level_2()
+{
+	for (unsigned i = 0; i < particle_set_2.size(); i++) {
+		((Particle*)particle_set_2[i])->attach = false;
+	}
+	particle_set_2.clear();
+}
+
+void Snow_plant::collapse_snow_plant_level_3()
+{
+	for (unsigned i = 0; i < particle_set_3.size(); i++) {
+		((Particle*)particle_set_3[i])->attach = false;
+	}
+	particle_set_3.clear();
+}
+
 
 
 void initSnowplant()
@@ -81,5 +105,9 @@ void collapse_snow_plant()
 		for (unsigned j = 0; j < snow_plant[i].particle_set_3.size(); j++) {
 			((Particle*)snow_plant[i].particle_set_3[j])->attach = false;
 		}
+		snow_plant[i].particle_set_1.clear();
+		snow_plant[i].particle_set_2.clear();
+		snow_plant[i].particle_set_3.clear();
 	}
+	
 }

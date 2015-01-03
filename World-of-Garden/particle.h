@@ -7,6 +7,7 @@
 #include "glhead.h"
 #include "map.h"
 #include "snowplant.h"
+#include "snowflower.h"
 
 
 class Particle {
@@ -21,10 +22,12 @@ public:
 	// ×´Ì¬
 	bool active;
 	bool attach;
+	bool ever_attach;
 
 private:
 	void crash_terrain();
 	void crash_plant();
+	void crash_flower();
 
 	
 	// Î»ÖÃ

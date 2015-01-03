@@ -7,6 +7,8 @@
 #include "particle.h"
 #include "glhead.h"
 
+#define SNOWPLANT_COLLAPSE_MAX 10
+
 using std::vector;
 
 enum SnowPlantType{XTREE};
@@ -24,6 +26,9 @@ public:
 	vector<void*> particle_set_1;	// µÚÒ»²ã»ýÑ©
 	vector<void*> particle_set_2;
 	vector<void*> particle_set_3;
+	void collapse_snow_plant_level_1();
+	void collapse_snow_plant_level_2();
+	void collapse_snow_plant_level_3();
 
 private:
 
@@ -32,6 +37,7 @@ private:
 void initSnowplant();
 void render_snow_plant();
 void collapse_snow_plant();
+
 
 extern vector<Snow_plant> snow_plant;
 

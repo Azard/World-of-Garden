@@ -21,7 +21,6 @@ public:
 	float size;
 	SnowFlowerType type;
 	vector<void*> particle_set_1;	// 花上
-	vector<void*> particle_set_2;	// 叶子上
 
 private:
 };

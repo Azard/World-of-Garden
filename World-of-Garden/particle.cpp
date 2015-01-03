@@ -20,7 +20,7 @@ int snow_active_speed = 4;
 
 Particle::Particle()
 {
-	active = attach = false;
+	active = attach = ever_attach = false;
 	pos_x = pos_y = pos_z = 0.0;
 	speed_x = speed_y = speed_z = 0.0;
 	accelerate_x = accelerate_y = accelerate_z = 0.0;
@@ -33,7 +33,7 @@ Particle::~Particle()
 
 void Particle::init()
 {
-	active = attach = false;
+	active = attach = ever_attach = false;
 	pos_x = pos_y = pos_z = 0.0;
 	speed_x = speed_y = speed_z = 0.0;
 	accelerate_x = accelerate_y = accelerate_z = 0.0;
@@ -82,6 +82,8 @@ void Particle::update()
 	if (active == true && attach == false) {
 		crash_terrain();
 		crash_plant();
+		if (ever_attach == false)
+			crash_flower();
 	}
 }
 
@@ -164,12 +166,16 @@ void Particle::crash_plant() {
 			bool1_level_1 = true;
 			this->attach = true;
 			snow_plant[i].particle_set_1.push_back((void*)this);
+			if (snow_plant[i].particle_set_1.size() >= SNOWPLANT_COLLAPSE_MAX)
+				snow_plant[i].collapse_snow_plant_level_1();
 		}
 		else if (pos_y <= solve2_level_1 && solve2_level_1 < origin_pos_y
 			&& 6.5*size <= solve2_level_1 && solve2_level_1 <= 8.0*size) {
 			bool2_level_1 = true;
 			this->attach = true;
 			snow_plant[i].particle_set_1.push_back((void*)this);
+			if (snow_plant[i].particle_set_1.size() >= SNOWPLANT_COLLAPSE_MAX)
+				snow_plant[i].collapse_snow_plant_level_1();
 		}
 
 		// 第二层
@@ -195,12 +201,16 @@ void Particle::crash_plant() {
 			bool1_level_2 = true;
 			this->attach = true;
 			snow_plant[i].particle_set_2.push_back((void*)this);
+			if (snow_plant[i].particle_set_2.size() >= SNOWPLANT_COLLAPSE_MAX)
+				snow_plant[i].collapse_snow_plant_level_2();
 		}
 		else if (pos_y <= solve2_level_2 && solve2_level_2 < origin_pos_y
 			&& 4.8*size <= solve2_level_2 && solve2_level_2 <= 7.0*size) {
 			bool2_level_2 = true;
 			this->attach = true;
 			snow_plant[i].particle_set_2.push_back((void*)this);
+			if (snow_plant[i].particle_set_2.size() >= SNOWPLANT_COLLAPSE_MAX)
+				snow_plant[i].collapse_snow_plant_level_2();
 		}
 
 		// 第三层
@@ -226,12 +236,16 @@ void Particle::crash_plant() {
 			bool1_level_3 = true;
 			this->attach = true;
 			snow_plant[i].particle_set_3.push_back((void*)this);
+			if (snow_plant[i].particle_set_3.size() >= SNOWPLANT_COLLAPSE_MAX)
+				snow_plant[i].collapse_snow_plant_level_3();
 		}
 		else if (pos_y <= solve2_level_3 && solve2_level_3 < origin_pos_y
 			&& 2.5*size <= solve2_level_3 && solve2_level_3 <= 5.5*size) {
 			bool2_level_3 = true;
 			this->attach = true;
 			snow_plant[i].particle_set_3.push_back((void*)this);
+			if (snow_plant[i].particle_set_3.size() >= SNOWPLANT_COLLAPSE_MAX)
+				snow_plant[i].collapse_snow_plant_level_3();
 		}
 
 	END:
@@ -240,6 +254,37 @@ void Particle::crash_plant() {
 	
 }
 
+void Particle::crash_flower()
+{
+	// 对于每个snow_flower
+	for (unsigned i = 0; i < snow_flower.size(); i++) {
+		float center_x = snow_flower[i].pos_x * 4 + 2;
+		float center_z = snow_flower[i].pos_z * 4 + 2;
+		float size = snow_flower[i].size;
+		// 减少判断
+		if (pos_x < center_x - 2.0*size
+			|| pos_x > center_x + 2.0*size
+			|| pos_z < center_z - 2.0*size
+			|| pos_z > center_z + 2.0*size
+			|| pos_y > 3.5 * size)
+			continue;
+		// 碰撞判断
+		float dis = sqrt(pow(pos_x - center_x, 2) + pow(pos_z - center_z, 2));
+		if (dis < 1.0*size) {
+			pos_y = 3.0*size + dis*0.3;
+			this->attach = true;
+			this->ever_attach = true;
+			snow_flower[i].particle_set_1.push_back((void*)this);
+		}
+		else if (dis < 1.5*size) {
+			pos_y = 4.4*size - dis * 1;
+			this->attach = true;
+			this->ever_attach = true;
+			snow_flower[i].particle_set_1.push_back((void*)this);
+		}
+	}
+
+}
 
 
 // 更新雪的数据
