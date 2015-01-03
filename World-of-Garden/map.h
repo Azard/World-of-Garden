@@ -18,7 +18,7 @@
 #define TRY_DEC_TIMES	5
 
 #define MAX_SPOT_PER_TERRAIN 10
-#define SPOT_PER_HEIGHT 2
+#define SPOT_PER_HEIGHT 10
 #define SNOW_ADD_HEIGHT 1
 
 struct Spot_pos {

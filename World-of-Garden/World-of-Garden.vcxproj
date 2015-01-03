@@ -74,6 +74,7 @@
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="plants.cpp" />
     <ClCompile Include="screenui.cpp" />
+    <ClCompile Include="snowflower.cpp" />
     <ClCompile Include="snowplant.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +85,7 @@
     <ClInclude Include="particle.h" />
     <ClInclude Include="plants.h" />
     <ClInclude Include="screenui.h" />
+    <ClInclude Include="snowflower.h" />
     <ClInclude Include="snowplant.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>

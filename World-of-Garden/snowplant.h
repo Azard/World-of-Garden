@@ -14,7 +14,7 @@ enum SnowPlantType{XTREE};
 
 class Snow_plant {
 public:
-	Snow_plant(int _x, int _z, SnowPlantType _type);
+	Snow_plant(int _x, int _z, SnowPlantType _type, float _size);
 	void render();
 
 	int pos_x;  // center_x: 4*pos_x + 2

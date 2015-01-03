@@ -3,12 +3,12 @@
 vector<Snow_plant> snow_plant;
 
 
-Snow_plant::Snow_plant(int _x, int _z, SnowPlantType _type)
+Snow_plant::Snow_plant(int _x, int _z, SnowPlantType _type, float _size)
 {
 	pos_x = _x;
 	pos_z = _z;
 	type = _type;
-	size = 1.0f;
+	size = _size;
 }
 
 
@@ -56,10 +56,10 @@ void Snow_plant::render()
 
 void initSnowplant()
 {
-	Snow_plant temp_0(21, 19, SnowPlantType::XTREE);
+	Snow_plant temp_0(21, 17, SnowPlantType::XTREE, 1.0f);
 	snow_plant.push_back(temp_0);
-	//Snow_plant temp_1(21, 16, SnowPlantType::XTREE);
-	//snow_plant.push_back(temp_1);
+	Snow_plant temp_1(19, 18, SnowPlantType::XTREE, 0.8f);
+	snow_plant.push_back(temp_1);
 }
 
 void render_snow_plant()

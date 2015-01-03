@@ -15,6 +15,7 @@
 #include "map.h"
 #include "screenui.h"
 #include "snowplant.h"
+#include "snowflower.h"
 
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
@@ -135,6 +136,7 @@ void render_scene(void) {
 	render_snow();
 	render_screenui();
 	render_snow_plant();
+	render_snow_flower();
 	
 
 
@@ -247,6 +249,7 @@ int main(int argc, char** argv) {
 	initScene();
 	initPlant();
 	initSnowplant();
+	initSnowflower();
 
 	initMapTexture();
 	initTerran();
