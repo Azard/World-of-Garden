@@ -9,6 +9,7 @@
 #include "snowplant.h"
 #include "snowflower.h"
 
+#define MY_PI 3.1415926
 
 class Particle {
 public:
@@ -61,6 +62,7 @@ extern float wind_z_accelerate;
 extern float particle_x_reverse;
 extern float particle_z_reverse;
 extern int snow_active_speed;
+extern bool use_2d_particle;
 
 // 雪有关的全局函数
 void initSnow();

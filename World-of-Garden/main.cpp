@@ -132,6 +132,7 @@ void render_scene(void) {
 	render_height_map();
 	render_wall();
 	render_sky();
+	render_moon();
 	render_plant();
 	render_snow();
 	render_screenui();

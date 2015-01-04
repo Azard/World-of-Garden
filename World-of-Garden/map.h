@@ -52,6 +52,7 @@ void load_terran();
 void render_height_map();
 void render_wall();
 void render_sky();
+void render_moon();
 int get_terran_height(int x, int y);
 void set_terrain_height(int height_plus);
 void terrain_save();

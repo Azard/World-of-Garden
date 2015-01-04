@@ -139,6 +139,11 @@ void allgrassland() {
 	}
 }
 
+void changeParticleRender()
+{
+	use_2d_particle = !use_2d_particle;
+}
+
 void initNormalKeys(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27:
@@ -179,6 +184,9 @@ void initNormalKeys(unsigned char key, int x, int y) {
 	case 't':
 		collapse_snow_plant();
 		collapse_snow_flower();
+		break;
+	case 'f':
+		changeParticleRender();
 		break;
 	}
 }

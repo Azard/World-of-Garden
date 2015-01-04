@@ -17,6 +17,8 @@ int snow_active_count = 0;
 int snow_active_speed = 4;
 #define SNOW_ACTIVE_Y 20.0
 
+bool use_2d_particle = false;
+
 
 Particle::Particle()
 {
@@ -57,7 +59,7 @@ void Particle::activate()
 	accelerate_y = gravity_accelerate;
 	accelerate_z = wind_z_accelerate;
 	color_r = color_g = color_b = 1.0f;
-	radius = rand() * 10.0 / RAND_MAX + 10.0;
+	radius = rand() * 0.1 / RAND_MAX + 0.05;
 	active = true;
 }
 
@@ -89,10 +91,23 @@ void Particle::update()
 
 void Particle::render()
 {
-	glPushMatrix();
-		glTranslatef(pos_x, pos_y, pos_z);
-		glutSolidSphere(0.1f, 6, 6);
-	glPopMatrix();
+	if (use_2d_particle == false) {
+		glPushMatrix();
+			glTranslatef(pos_x, pos_y, pos_z);
+			glutSolidSphere(radius, 6, 6);
+		glPopMatrix();
+	}
+	else {
+		glPushMatrix();
+			glTranslatef(pos_x, pos_y, pos_z);
+			glRotatef(-angle_plane / MY_PI * 180, 0, 1.0f, 0);
+			glRotatef(-angle_updown / MY_PI * 180, 1.0f, 0, 0);
+			glBegin(GL_POLYGON);
+			for (int i = 0; i < 6; ++i)
+				glVertex2f(radius* cos(2 * MY_PI / 6 * i), radius* sin(2 * MY_PI / 6*i));
+			glEnd();
+		glPopMatrix();
+	}
 }
 
 void Particle::crash_terrain() {

@@ -10,6 +10,7 @@
 #include "ui.h"
 #include "map.h"
 #include "plants.h"
+#include "particle.h"
 
 extern UI_set* UI;
 
@@ -43,6 +44,7 @@ void onlight();
 void offlight();
 void allsnowland();
 void allgrassland();
+void changeParticleRender();
 
 void initNormalKeys(unsigned char key, int x, int y);
 void initSpecialKeys(int key, int x, int y);

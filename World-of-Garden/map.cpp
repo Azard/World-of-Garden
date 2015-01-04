@@ -332,6 +332,29 @@ void render_sky() {
 	glPopMatrix();
 }
 
+void render_moon()
+{
+	glPushMatrix();
+
+	glColor3f(0.9f, 1.0f, 0.0f);
+	glTranslatef(100.0f, 30.0f, 10.0f);
+
+	glutSolidSphere(5.0f, 20, 20);
+
+	//glRotatef(-angle_plane / MY_PI * 180, 0, 1.0f, 0);
+	//glRotatef(-angle_updown / MY_PI * 180, 1.0f, 0, 0);
+	/*
+	glBegin(GL_POLYGON);
+	glVertex2f(0.0f, 0.0f);
+	glVertex2f(1.0f, 0.0f);
+	glVertex2f(2.0f, 0.0f);
+	glVertex2f(2.0f, 1.0f);
+	glEnd();
+	*/
+
+	glPopMatrix();
+}
+
 
 AUX_RGBImageRec* LoadBMP(char *Filename)
 {
