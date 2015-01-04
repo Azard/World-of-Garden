@@ -22,6 +22,7 @@ void initMouseClick(int button, int state, int x, int y) {
 		if (state == GLUT_DOWN) {
 			click_left = true;
 			click_screenui(x, y);
+			printf("x:%d, y:%d\n", x, y);
 		}
 		else if (state == GLUT_UP)
 			click_left = false;

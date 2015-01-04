@@ -187,7 +187,12 @@ void Snow_flower::render()
 	glPopMatrix();
 }
 
-
+void Snow_flower::collapse_snow_flower_level_1()
+{
+	for (unsigned i = 0; i < particle_set_1.size(); i++) {
+		((Particle*)particle_set_1[i])->attach = false;
+	}
+}
 
 void initSnowflower()
 {

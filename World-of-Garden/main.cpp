@@ -20,7 +20,7 @@
 #define WINDOW_POS_X	0
 #define WINDOW_POS_Y	0
 #define WINDOW_LENGTH	1024
-#define WINDOW_WIDTH	768
+#define WINDOW_WIDTH	690
 
 GLint snowman_display_list;
 int main_window;

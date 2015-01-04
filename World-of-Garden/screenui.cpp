@@ -34,20 +34,20 @@ void render_screenui()
 }
 
 #define WINDOW_LENGTH	1024
-#define WINDOW_WIDTH	768
+#define WINDOW_WIDTH	690
 void click_screenui(int x, int y)
 {
-	if (x >= WINDOW_LENGTH - 214 && x <= WINDOW_LENGTH - 179 && y >= 630 && y <= 665)
+	if (x >= WINDOW_LENGTH - 195 && x <= WINDOW_LENGTH - 160 && y >= 564 && y <= 604)
 		ui_click_up();
-	else if (x >= WINDOW_LENGTH - 214 && x <= WINDOW_LENGTH - 179 && y >= 717 && y <= 756)
+	else if (x >= WINDOW_LENGTH - 195 && x <= WINDOW_LENGTH - 160 && y >= 644 && y <= 682)
 		ui_click_down();
-	else if (x >= WINDOW_LENGTH - 259 && x <= WINDOW_LENGTH - 219 && y >= 674 && y <= 714)
+	else if (x >= WINDOW_LENGTH - 232 && x <= WINDOW_LENGTH - 195 && y >= 605 && y <= 642)
 		ui_click_left();
-	else if (x >= WINDOW_LENGTH - 171 && x <= WINDOW_LENGTH - 131 && y >= 674 && y <= 714)
+	else if (x >= WINDOW_LENGTH - 153 && x <= WINDOW_LENGTH - 118 && y >= 606 && y <= 641)
 		ui_click_right();
-	else if (x >= WINDOW_LENGTH - 74 && x <= WINDOW_LENGTH - 32 && y >= 644 && y <= 682)
+	else if (x >= WINDOW_LENGTH - 65 && x <= WINDOW_LENGTH - 27 && y >= 574 && y <= 614)
 		ui_click_plus();
-	else if (x >= WINDOW_LENGTH - 74 && x <= WINDOW_LENGTH - 32 && y >= 710 && y <= 749)
+	else if (x >= WINDOW_LENGTH - 65 && x <= WINDOW_LENGTH - 27 && y >= 636 && y <= 675)
 		ui_click_decrease();
 }
 

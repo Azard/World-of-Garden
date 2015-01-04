@@ -7,6 +7,8 @@
 #include "particle.h"
 #include "glhead.h"
 
+#define SNOWFLOWER_COLLAPSE_MAX 6
+
 using std::vector;
 
 enum SnowFlowerType{NFLOWER};
@@ -15,6 +17,7 @@ class Snow_flower {
 public:
 	Snow_flower(int _x, int _z, SnowFlowerType _type, float _size);
 	void render();
+	void collapse_snow_flower_level_1();
 
 	int pos_x;  // center_x: 4*pos_x + 2
 	int pos_z;	// center_z: 4*pos_z + 2

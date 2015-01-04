@@ -275,12 +275,16 @@ void Particle::crash_flower()
 			this->attach = true;
 			this->ever_attach = true;
 			snow_flower[i].particle_set_1.push_back((void*)this);
+			if (snow_flower[i].particle_set_1.size() >= SNOWFLOWER_COLLAPSE_MAX)
+				snow_flower[i].collapse_snow_flower_level_1();
 		}
 		else if (dis < 1.5*size) {
 			pos_y = 4.4*size - dis * 1;
 			this->attach = true;
 			this->ever_attach = true;
 			snow_flower[i].particle_set_1.push_back((void*)this);
+			if (snow_flower[i].particle_set_1.size() >= SNOWFLOWER_COLLAPSE_MAX)
+				snow_flower[i].collapse_snow_flower_level_1();
 		}
 	}
 
