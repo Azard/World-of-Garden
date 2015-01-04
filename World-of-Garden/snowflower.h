@@ -8,6 +8,7 @@
 #include "glhead.h"
 
 #define SNOWFLOWER_COLLAPSE_MAX 6
+#define SNOWFLOWER_COLLAPSE_ACTION 60
 
 using std::vector;
 
@@ -23,6 +24,8 @@ public:
 	int pos_z;	// center_z: 4*pos_z + 2
 	float size;
 	SnowFlowerType type;
+	bool action_1;
+	int action_count_1;
 	vector<void*> particle_set_1;	// ª®…œ
 
 private:

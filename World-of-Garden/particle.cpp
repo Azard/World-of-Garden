@@ -121,7 +121,31 @@ void Particle::crash_terrain() {
 		snow_active_count--;
 		int terrain_spot_x = (int)pos_x / STEP_SIZE;
 		int terrain_spot_z = (int)pos_z / STEP_SIZE;
-		snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
+		// Æ½Ì¯µ½ÅÔ±ß
+		int index[4];
+		bool is_use = false;
+		int this_spot_count = snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].spot_count;
+		index[0] = terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE - 1;
+		index[1] = terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE + 1;
+		index[2] = terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE + 32;
+		index[3] = terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE - 32;
+		for (int i = 0; i < 4; i++) {
+			if (index[i] < 992 && index[i] > 32 && (snow_spot[index[i]].spot_count + 1 < this_spot_count)) {
+				is_use = true;
+				if (i == 0)
+					pos_x -= 32;
+				else if (i == 1)
+					pos_x += 32;
+				else if (i == 2)
+					pos_z += 32;
+				else if (i == 3)
+					pos_z -= 32;
+				snow_spot[index[i]].add_spot(pos_x, pos_z);
+				break;
+			}
+		}
+		if (is_use == false)
+			snow_spot[terrain_spot_x + terrain_spot_z * MAP_SIZE / STEP_SIZE].add_spot(pos_x, pos_z);
 	}
 }
 
